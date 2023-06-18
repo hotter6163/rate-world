@@ -6,11 +6,11 @@ interface Props {
   children: ReactNode;
 }
 
-const AuthLayout: FC<Props> = async ({ children }) => {
+const UnauthenticatedLayout: FC<Props> = async ({ children }) => {
   const session = await getServerSession();
 
   if (session) return redirect('/');
   else return <>{children}</>;
 };
 
-export default AuthLayout;
+export default UnauthenticatedLayout;

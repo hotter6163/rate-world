@@ -2,14 +2,14 @@ import { getServerSession } from '@/libs/auth/common/getServerSession';
 import { FC, ReactNode } from 'react';
 
 interface Props {
-  private: ReactNode;
-  public: ReactNode;
+  authenticated: ReactNode;
+  unauthenticated: ReactNode;
 }
 
-const HomeLayout: FC<Props> = async ({ private: Private, public: Public }) => {
+const HomeLayout: FC<Props> = async ({ authenticated, unauthenticated }) => {
   const session = await getServerSession();
 
-  return <>{session ? Private : Public}</>;
+  return <>{session ? authenticated : unauthenticated}</>;
 };
 
 export default HomeLayout;
