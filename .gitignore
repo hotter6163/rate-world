@@ -36,3 +36,6 @@ next-env.d.ts
 
 # graphql generated 
 src/libs/gql/generated
+src/libs/gql/schema/resolvers.generated.ts
+src/libs/gql/schema/typeDefs.generated.ts
+src/libs/gql/schema/types.generated.ts
