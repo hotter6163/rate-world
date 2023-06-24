@@ -2,7 +2,7 @@ module.exports = {
   extends: ['next/core-web-vitals', 'prettier'],
   overrides: [
     {
-      files: ['*.js'],
+      files: ['*.ts', '*.tsx'],
       processor: '@graphql-eslint/graphql',
     },
     {
