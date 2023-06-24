@@ -20,8 +20,8 @@ const config: CodegenConfig = {
       plugins: ['typescript', 'typescript-resolvers'],
     },
     './src/libs/gql/generated/schema.graphql': {
-      plugins: ['schema-ast']
-    }
+      plugins: ['schema-ast'],
+    },
   },
 };
 

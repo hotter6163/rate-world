@@ -1,6 +1,6 @@
 import { Resolvers } from '../generated/resolvers-types';
-import { Mutation } from '../schema/base/resolvers/Mutation';
-import { Query } from '../schema/base/resolvers/Query';
+import { Mutation } from '../schema/Mutation';
+import { Query } from '../schema/Query';
 
 export const resolvers: Resolvers = {
   Query,

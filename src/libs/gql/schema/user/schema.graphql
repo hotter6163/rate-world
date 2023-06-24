@@ -1,8 +1,8 @@
-extend type Query {
+type Query {
   user(id: String): User
 }
 
-extend type Mutation {
+type Mutation {
   createUser(input: CreateUserInput!): CreateUserPayload
 }
 
