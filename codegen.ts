@@ -1,9 +1,8 @@
-import { defineConfig } from '@eddeee888/gcg-typescript-resolver-files';
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: '**/*.graphql',
+  schema: './src/libs/gql/schema/**/*.graphql',
   documents: ['src/**/*.tsx', 'src/**/*.ts'],
   ignoreNoDocuments: true,
   generates: {
@@ -14,7 +13,15 @@ const config: CodegenConfig = {
         avoidOptionals: true,
       },
     },
-    'src/libs/gql/schema': defineConfig(),
+    './src/libs/gql/generated/resolvers-types.ts': {
+      config: {
+        useIndexSignature: true,
+      },
+      plugins: ['typescript', 'typescript-resolvers'],
+    },
+    './src/libs/gql/generated/schema.graphql': {
+      plugins: ['schema-ast']
+    }
   },
 };
 
