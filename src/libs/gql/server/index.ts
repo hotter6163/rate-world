@@ -1,4 +1,3 @@
-import { resolvers } from '../schema/resolvers.generated';
 import { typeDefs } from '../schema/typeDefs.generated';
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';

@@ -1,9 +1,7 @@
-import type { QueryResolvers } from './../../../types.generated';
+import { QueryResolvers } from '@/libs/gql/generated/resolvers-types';
 
-export const user: NonNullable<QueryResolvers['user']> = async (_parent, _arg, _ctx) => {
-  return {
-    id: '1',
-    name: 'name',
-    age: 1,
-  };
-};
+export const userQuery: QueryResolvers['user'] = () => ({
+  id: '0',
+  name: 'john',
+  age: 5,
+});
