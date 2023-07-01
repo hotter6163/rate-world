@@ -3,12 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently \"yarn dev:next\" \"yarn codegen --watch\" \"yarn prisma:generate --watch\" \"yarn studio\"",
+    "dev:next": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "format": "prettier --write \"**/*.{ts,tsx,md}\" && prisma format",
+    "codegen": "graphql-codegen --config codegen.ts",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
+    "studio": "prisma studio"
   },
   "dependencies": {
     "@apollo/client": "^3.7.15",
@@ -40,6 +44,7 @@
     "@graphql-codegen/typescript-resolvers": "^4.0.1",
     "@graphql-eslint/eslint-plugin": "^3.19.1",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+    "concurrently": "^8.2.0",
     "eslint-config-prettier": "^8.8.0",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.3.0",
