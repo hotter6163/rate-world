@@ -9,7 +9,6 @@ https://www.notion.so/b0a0040c8eb74c349537da428ac718dc
 ## サイト
 
 https://rate-world.vercel.app/
-※ 環境変数を設定していないため、現在は動作しません。
 
 ## 開発
 
