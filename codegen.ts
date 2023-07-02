@@ -15,6 +15,11 @@ const config: CodegenConfig = {
     },
     './src/libs/gql/generated/resolvers-types.ts': {
       config: {
+        contextType: '@/libs/gql/server/context#Context',
+        mapperTypeSuffix: 'Model',
+        mappers: {
+          User: '@prisma/client/index.d#User',
+        },
         useIndexSignature: true,
       },
       plugins: ['typescript', 'typescript-resolvers'],
