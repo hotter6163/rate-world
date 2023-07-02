@@ -1,4 +1,5 @@
 type Query {
+  users: [User!]!
   user(id: ID!): User
 }
 
@@ -15,6 +16,7 @@ type User {
 input CreateUserInput {
   name: String!
   age: String!
+  email: String!
 }
 
 type CreateUserPayload {
