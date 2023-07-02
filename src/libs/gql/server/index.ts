@@ -1,14 +1,15 @@
 import typeDefs from '../generated/schema.graphql';
+import { Context, context } from './context';
 import { resolvers } from './resolvers';
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
-import { NextRequest } from 'next/server';
+import { NextApiRequest } from 'next';
 
-const server = new ApolloServer<{}>({
+const server = new ApolloServer<Context>({
   resolvers,
   typeDefs,
 });
 
-export const apolloServer = startServerAndCreateNextHandler<NextRequest>(server, {
-  context: async (req) => ({ req }),
+export const apolloServer = startServerAndCreateNextHandler<NextApiRequest, Context>(server, {
+  context,
 });
