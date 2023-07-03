@@ -1,6 +1,6 @@
 'use client';
 
-import { signInWithLine } from '@/libs/auth/line/signInWithLine';
+import { signInWithLine } from '@/libs/auth';
 import { FC } from 'react';
 
 export const SignInButton: FC = () => (

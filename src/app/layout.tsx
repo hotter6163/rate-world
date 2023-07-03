@@ -1,6 +1,5 @@
 import './globals.css';
-import { SessionProvider } from '@/libs/auth/common/SessionProvider';
-import { getServerSession } from '@/libs/auth/common/getServerSession';
+import { SessionProvider, getServerSession } from '@/libs/auth';
 import { Inter } from 'next/font/google';
 import { FC, ReactNode } from 'react';
 

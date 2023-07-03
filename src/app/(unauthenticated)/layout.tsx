@@ -1,4 +1,4 @@
-import { getServerSession } from '@/libs/auth/common/getServerSession';
+import { getServerSession } from '@/libs/auth';
 import { redirect } from 'next/navigation';
 import { FC, ReactNode } from 'react';
 

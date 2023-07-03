@@ -1,4 +1,4 @@
-import { getServerSession } from '@/libs/auth/common/getServerSession';
+import { getServerSession } from '@/libs/auth/getServerSession';
 import { graphql } from '@/libs/gql/generated';
 import { FC, ReactNode } from 'react';
 
