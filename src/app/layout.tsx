@@ -21,9 +21,7 @@ const RootLayout: FC<Props> = async ({ children }) => {
   return (
     <html lang="jp">
       <body className={inter.className}>
-        <SessionProvider session={session}>
-          <div className="mx-auto min-h-screen max-w-md bg-white drop-shadow-2xl">{children}</div>
-        </SessionProvider>
+        <SessionProvider session={session}>{children}</SessionProvider>
       </body>
     </html>
   );
