@@ -17,16 +17,20 @@ export const metadata: Metadata = {
 };
 
 interface Props {
+  modal: ReactNode;
   children: ReactNode;
 }
 
-const RootLayout: FC<Props> = async ({ children }) => {
+const RootLayout: FC<Props> = async ({ modal, children }) => {
   const session = await getServerSession();
 
   return (
     <html lang="jp">
       <body className={inter.className}>
-        <SessionProvider session={session}>{children}</SessionProvider>
+        <SessionProvider session={session}>
+          {children}
+          {modal}
+        </SessionProvider>
       </body>
     </html>
   );
