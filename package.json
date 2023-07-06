@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"yarn dev:next\" \"yarn codegen --watch\" \"yarn prisma:generate --watch\" \"yarn studio\"",
+    "dev": "DISABLE_ERD=true concurrently \"yarn dev:next\" \"yarn codegen --watch\" \"yarn prisma:generate --watch\" \"yarn studio\"",
     "dev:next": "next dev",
     "build": "next build",
     "start": "next start",
