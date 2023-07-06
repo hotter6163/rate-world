@@ -1,5 +1,5 @@
 import { Logo } from './Logo';
-import { SignOutButton } from './SignOutButton';
+import { SignOutButton } from '@/features/auth/SignOutButton';
 import { getServerSession } from '@/libs/auth';
 import Link from 'next/link';
 import { FC } from 'react';
