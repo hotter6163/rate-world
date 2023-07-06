@@ -44,11 +44,14 @@
     "@graphql-codegen/typescript": "^4.0.1",
     "@graphql-codegen/typescript-resolvers": "^4.0.1",
     "@graphql-eslint/eslint-plugin": "^3.19.1",
+    "@mermaid-js/mermaid-cli": "^10.2.2",
+    "@prisma/generator-helper": "^4.16.2",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "concurrently": "^8.2.0",
     "eslint-config-prettier": "^8.8.0",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.3.0",
-    "prisma": "^4.16.2"
+    "prisma": "^4.16.2",
+    "prisma-erd-generator": "^1.6.2"
   }
 }
