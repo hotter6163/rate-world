@@ -1,4 +1,5 @@
-import { getServerSession } from '@/libs/auth/common/getServerSession';
+import { Header } from '@/components/layout/Header';
+import { getServerSession } from '@/libs/auth/getServerSession';
 import { graphql } from '@/libs/gql/generated';
 import { FC, ReactNode } from 'react';
 
@@ -18,7 +19,12 @@ const query = graphql(`
 const HomeLayout: FC<Props> = async ({ authenticated, unauthenticated }) => {
   const session = await getServerSession();
 
-  return <>{session ? authenticated : unauthenticated}</>;
+  return (
+    <>
+      <Header />
+      <div className="mx-auto max-w-6xl">{session ? authenticated : unauthenticated}</div>
+    </>
+  );
 };
 
 export default HomeLayout;

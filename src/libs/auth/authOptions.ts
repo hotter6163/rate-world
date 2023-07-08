@@ -1,4 +1,4 @@
-import { prismaClient } from '@/libs/prisma/client';
+import prismaClient from '@/libs/prisma';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { AuthOptions } from 'next-auth';
 import LineProvider from 'next-auth/providers/line';
