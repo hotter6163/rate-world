@@ -1,5 +1,6 @@
 import './globals.css';
 import { SessionProvider, getServerSession } from '@/libs/auth';
+import { PusherProvider } from '@/libs/pusher/PusherProvider';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { FC, ReactNode } from 'react';
@@ -28,8 +29,10 @@ const RootLayout: FC<Props> = async ({ modal, children }) => {
     <html lang="jp">
       <body className={inter.className}>
         <SessionProvider session={session}>
-          {children}
-          {modal}
+          <PusherProvider>
+            {children}
+            {modal}
+          </PusherProvider>
         </SessionProvider>
       </body>
     </html>
