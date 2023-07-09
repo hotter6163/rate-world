@@ -4,43 +4,43 @@ import { ConnectionState } from './ConnectionState';
 import { PusherContext } from './PusherContext';
 import { setupPusher } from './setupPusher';
 import Pusher from 'pusher-js';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 
 interface Props {
   children: ReactNode;
 }
 
 export const PusherProvider: React.FC<Props> = ({ children }) => {
-  const [pusher, setPusher] = useState<Pusher | null>(null);
+  const pusherRef = useRef<Pusher | null>(null);
   const [state, setState] = useState(ConnectionState.Disconnected);
   const [error, setError] = useState('');
 
   const connect = () => {
-    if (pusher && pusher.connection.state !== ConnectionState.Disconnected) {
+    if (pusherRef.current && pusherRef.current.connection.state !== ConnectionState.Disconnected) {
       // TODO: UIでエラーを表示する
       console.error('Pusher is already connected');
       return;
     }
 
-    const newPusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY!, {
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY!, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
     });
     setupPusher({
-      pusher: newPusher,
+      pusher,
       setState,
       setError,
     });
-    setPusher(newPusher);
+    pusherRef.current = pusher;
   };
 
   const disconnect = () => {
-    if (!pusher) {
+    if (!pusherRef.current) {
       // TODO: UIでエラーを表示する
       console.error('Pusher is not connected');
       return;
     }
-    pusher.disconnect();
-    setPusher(null);
+    pusherRef.current.disconnect();
+    pusherRef.current = null;
   };
 
   return (
