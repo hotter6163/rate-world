@@ -1,4 +1,4 @@
-import { ConnectionState } from './ConnectionState';
+import { ConnectionState } from './types/ConnectionState';
 import { createContext } from 'react';
 
 interface Context {

@@ -1,8 +1,9 @@
 'use client';
 
-import { ConnectionState } from './ConnectionState';
 import { PusherContext } from './PusherContext';
-import { setupPusher } from './setupPusher';
+import { connectionErrorHandler } from './handlers/connection/error';
+import { connectionStateChangeHandler } from './handlers/connection/stateChange';
+import { ConnectionState } from './types/ConnectionState';
 import Pusher from 'pusher-js';
 import { ReactNode, useRef, useState } from 'react';
 
@@ -25,11 +26,10 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY!, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
     });
-    setupPusher({
-      pusher,
-      setState,
-      setError,
-    });
+
+    pusher.connection.bind('error', connectionErrorHandler(setError));
+    pusher.connection.bind('state_change', connectionStateChangeHandler(setState));
+
     pusherRef.current = pusher;
   };
 
