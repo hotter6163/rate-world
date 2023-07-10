@@ -1,3 +1,5 @@
+'use client';
+
 import { ConnectionState } from './types/ConnectionState';
 import { createContext } from 'react';
 
