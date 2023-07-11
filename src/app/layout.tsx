@@ -1,4 +1,5 @@
 import './globals.css';
+import { Toast } from '@/components/Toast';
 import { SessionProvider, getServerSession } from '@/libs/auth';
 import { PusherProvider } from '@/libs/pusher/client';
 import { Metadata } from 'next';
@@ -34,6 +35,7 @@ const RootLayout: FC<Props> = async ({ modal, children }) => {
             {modal}
           </PusherProvider>
         </SessionProvider>
+        <Toast />
       </body>
     </html>
   );
