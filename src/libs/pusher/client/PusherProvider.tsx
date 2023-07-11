@@ -25,6 +25,10 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
 
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY!, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+      userAuthentication: {
+        endpoint: '/api/pusher/user-auth',
+        transport: 'ajax',
+      },
     });
 
     pusher.connection.bind('error', connectionErrorHandler(setError));
@@ -43,6 +47,15 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
     pusherRef.current = null;
   };
 
+  const signin = () => {
+    if (!pusherRef.current) {
+      // TODO: UIでエラーを表示する
+      console.error('Pusher is already connected');
+      return;
+    }
+    pusherRef.current.signin();
+  };
+
   return (
     <PusherContext.Provider
       value={{
@@ -50,6 +63,7 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
         error,
         connect,
         disconnect,
+        signin,
       }}
     >
       {children}

@@ -1,6 +1,6 @@
 import './globals.css';
 import { SessionProvider, getServerSession } from '@/libs/auth';
-import { PusherProvider } from '@/libs/pusher';
+import { PusherProvider } from '@/libs/pusher/client';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { FC, ReactNode } from 'react';

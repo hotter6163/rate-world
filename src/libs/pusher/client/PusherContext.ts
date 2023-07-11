@@ -8,6 +8,7 @@ interface Context {
   error: string;
   connect: () => void;
   disconnect: () => void;
+  signin: () => void;
 }
 
 export const PusherContext = createContext<Context>({
@@ -18,5 +19,8 @@ export const PusherContext = createContext<Context>({
   },
   disconnect: () => {
     throw new Error('Disconnect function must be overridden');
+  },
+  signin: () => {
+    throw new Error('Signin function must be overridden');
   },
 });
