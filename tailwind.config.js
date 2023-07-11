@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        success: "#64D769",
+        failed: "#DF5947",
+      },
       height: {
         screen: '100dvh',
       },

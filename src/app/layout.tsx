@@ -1,4 +1,5 @@
 import './globals.css';
+import { Toast } from '@/components/Toast';
 import { SessionProvider, getServerSession } from '@/libs/auth';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -31,6 +32,7 @@ const RootLayout: FC<Props> = async ({ modal, children }) => {
           {children}
           {modal}
         </SessionProvider>
+        <Toast />
       </body>
     </html>
   );
