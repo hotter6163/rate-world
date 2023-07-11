@@ -4,6 +4,7 @@ import { PusherContext } from './PusherContext';
 import { connectionErrorHandler } from './handlers/connection/error';
 import { connectionStateChangeHandler } from './handlers/connection/stateChange';
 import { ConnectionState } from './types/ConnectionState';
+import { useSession } from 'next-auth/react';
 import Pusher from 'pusher-js';
 import { ReactNode, useRef, useState } from 'react';
 
@@ -15,11 +16,18 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
   const pusherRef = useRef<Pusher | null>(null);
   const [state, setState] = useState(ConnectionState.Disconnected);
   const [error, setError] = useState('');
+  const { status } = useSession();
 
   const connect = () => {
     if (pusherRef.current && pusherRef.current.connection.state !== ConnectionState.Disconnected) {
       // TODO: UIでエラーを表示する
       console.error('Pusher is already connected');
+      return;
+    }
+
+    if (status !== 'authenticated') {
+      // TODO: UIでエラーを表示する
+      console.error('User is not authenticated');
       return;
     }
 
