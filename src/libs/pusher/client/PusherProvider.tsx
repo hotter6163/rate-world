@@ -31,6 +31,8 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
       },
     });
 
+    pusher.signin();
+
     pusher.connection.bind('error', connectionErrorHandler(setError));
     pusher.connection.bind('state_change', connectionStateChangeHandler(setState));
 
@@ -47,15 +49,6 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
     pusherRef.current = null;
   };
 
-  const signin = () => {
-    if (!pusherRef.current) {
-      // TODO: UIでエラーを表示する
-      console.error('Pusher is already connected');
-      return;
-    }
-    pusherRef.current.signin();
-  };
-
   return (
     <PusherContext.Provider
       value={{
@@ -63,7 +56,6 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
         error,
         connect,
         disconnect,
-        signin,
       }}
     >
       {children}
