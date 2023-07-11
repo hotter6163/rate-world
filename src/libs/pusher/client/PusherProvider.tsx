@@ -4,6 +4,7 @@ import { PusherContext } from './PusherContext';
 import { connectionErrorHandler } from './handlers/connection/error';
 import { connectionStateChangeHandler } from './handlers/connection/stateChange';
 import { ConnectionState } from './types/ConnectionState';
+import { useToast } from '@/hooks/useToast';
 import { useSession } from 'next-auth/react';
 import Pusher from 'pusher-js';
 import { ReactNode, useRef, useState } from 'react';
@@ -17,17 +18,16 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
   const [state, setState] = useState(ConnectionState.Disconnected);
   const [error, setError] = useState('');
   const { status } = useSession();
+  const { errorMessage, successMessage } = useToast();
 
   const connect = () => {
     if (pusherRef.current && pusherRef.current.connection.state !== ConnectionState.Disconnected) {
-      // TODO: UIでエラーを表示する
-      console.error('Pusher is already connected');
+      errorMessage('既にサーバーに接続されています。');
       return;
     }
 
     if (status !== 'authenticated') {
-      // TODO: UIでエラーを表示する
-      console.error('User is not authenticated');
+      errorMessage('ログインしてください。');
       return;
     }
 
@@ -41,16 +41,15 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
 
     pusher.signin();
 
-    pusher.connection.bind('error', connectionErrorHandler(setError));
-    pusher.connection.bind('state_change', connectionStateChangeHandler(setState));
+    pusher.connection.bind('error', connectionErrorHandler(setError, errorMessage));
+    pusher.connection.bind('state_change', connectionStateChangeHandler(setState, successMessage));
 
     pusherRef.current = pusher;
   };
 
   const disconnect = () => {
     if (!pusherRef.current) {
-      // TODO: UIでエラーを表示する
-      console.error('Pusher is not connected');
+      errorMessage('サーバーに接続されていません。');
       return;
     }
     pusherRef.current.disconnect();
