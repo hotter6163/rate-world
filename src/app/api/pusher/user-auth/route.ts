@@ -1,5 +1,5 @@
 import prisma from '@/libs/prisma';
-import { initializePusher } from '@/libs/pusher/server/initialize';
+import pusher from '@/libs/pusher/server';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import Pusher from 'pusher';
@@ -16,7 +16,7 @@ export const POST = async (req: NextRequest) => {
   if (typeof socketId !== 'string') return new ForbiddenResponse('Socket ID is not found');
   if (!userData) return new ForbiddenResponse('Invalid session token');
 
-  const authResponse = initializePusher().authenticateUser(socketId, userData);
+  const authResponse = pusher.authenticateUser(socketId, userData);
 
   return NextResponse.json(authResponse);
 };
