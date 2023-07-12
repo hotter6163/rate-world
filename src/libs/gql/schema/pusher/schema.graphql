@@ -1,0 +1,17 @@
+type Mutation {
+  authenticateUser(input: AuthenticateUserInput!): AuthenticateUserPayload!
+}
+
+input AuthenticateUserInput {
+  socketId: String!
+}
+
+type AuthenticateUserPayload {
+  data: AuthenticateUserData
+  status: Int!
+}
+
+type AuthenticateUserData {
+  auth: String!
+  userData: String!
+}
