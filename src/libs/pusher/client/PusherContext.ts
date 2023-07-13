@@ -8,6 +8,7 @@ interface Context {
   error: string;
   connect: () => void;
   disconnect: () => void;
+  subscribe: (channel: string) => void;
 }
 
 export const PusherContext = createContext<Context>({
@@ -18,5 +19,8 @@ export const PusherContext = createContext<Context>({
   },
   disconnect: () => {
     throw new Error('Disconnect function must be overridden');
+  },
+  subscribe: () => {
+    throw new Error('Subscribe function must be overridden');
   },
 });

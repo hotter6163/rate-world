@@ -1,6 +1,8 @@
 'use client';
 
 import { PusherContext } from './PusherContext';
+import { channelSubscriptionErrorHandler } from './handlers/channel/subscriptionError';
+import { channelSubscriptionSucceededHandler } from './handlers/channel/subscriptionSucceeded';
 import { connectionErrorHandler } from './handlers/connection/error';
 import { connectionStateChangeHandler } from './handlers/connection/stateChange';
 import { ConnectionState } from './types/ConnectionState';
@@ -11,12 +13,24 @@ import { useSession } from 'next-auth/react';
 import Pusher from 'pusher-js';
 import { ReactNode, useRef, useState } from 'react';
 
-const mutation = graphql(`
-  mutation PusherSignin($input: AuthenticateUserInput!) {
+const authenticateUser = graphql(`
+  mutation AuthenticateUser($input: AuthenticateUserInput!) {
     authenticateUser(input: $input) {
       data {
         auth
         userData
+      }
+    }
+  }
+`);
+
+const authorizeChannel = graphql(`
+  mutation AuthorizeChannel($input: AuthorizeChannelInput!) {
+    authorizeChannel(input: $input) {
+      data {
+        auth
+        channelData
+        sharedSecret
       }
     }
   }
@@ -32,7 +46,12 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
   const [error, setError] = useState('');
   const { status } = useSession();
   const { errorMessage, successMessage } = useToast();
-  const [pusherSignin] = useMutation(mutation);
+  const [authenticate] = useMutation(authenticateUser, {
+    fetchPolicy: 'no-cache',
+  });
+  const [authorize] = useMutation(authorizeChannel, {
+    fetchPolicy: 'no-cache',
+  });
 
   const connect = () => {
     if (pusherRef.current && pusherRef.current.connection.state !== ConnectionState.Disconnected) {
@@ -51,12 +70,31 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
         endpoint: '/',
         transport: 'ajax',
         customHandler: async ({ socketId }, callback) => {
-          const { data } = await pusherSignin({ variables: { input: { socketId } } });
+          const { data } = await authenticate({ variables: { input: { socketId } } });
           if (!data?.authenticateUser.data)
             return callback(new Error('認証に失敗しました。'), null);
           else {
             const { auth, userData } = data.authenticateUser.data;
             return callback(null, { auth, user_data: userData });
+          }
+        },
+      },
+      channelAuthorization: {
+        endpoint: '/',
+        transport: 'ajax',
+        customHandler: async ({ socketId, channelName }, callback) => {
+          const { data } = await authorize({
+            variables: { input: { socketId, channelName } },
+          });
+          if (!data?.authorizeChannel.data)
+            return callback(new Error('認可に失敗しました。'), null);
+          else {
+            const { auth, channelData, sharedSecret } = data.authorizeChannel.data;
+            return callback(null, {
+              auth,
+              channel_data: channelData ?? undefined,
+              shared_secret: sharedSecret ?? undefined,
+            });
           }
         },
       },
@@ -79,6 +117,16 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
     pusherRef.current = null;
   };
 
+  const subscribe = (channelName: string) => {
+    if (!pusherRef.current) {
+      errorMessage('サーバーに接続されていません。');
+      return;
+    }
+    const channel = pusherRef.current.subscribe(channelName);
+    channel.bind('pusher:subscription_succeeded', channelSubscriptionSucceededHandler(channelName));
+    channel.bind('pusher:subscription_error', channelSubscriptionErrorHandler(errorMessage));
+  };
+
   return (
     <PusherContext.Provider
       value={{
@@ -86,6 +134,7 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
         error,
         connect,
         disconnect,
+        subscribe,
       }}
     >
       {children}
