@@ -5,7 +5,6 @@ export const authenticateUserMutation: MutationResolvers['authenticateUser'] = a
   { input: { socketId } },
   { token, dataSources: { session }, pusher },
 ) => {
-  console.log(token);
   if (!token) return { data: null, status: 403 };
 
   const user = await session
@@ -18,6 +17,10 @@ export const authenticateUserMutation: MutationResolvers['authenticateUser'] = a
     );
   if (!user) return { data: null, status: 403 };
 
-  const { auth, user_data: userData } = pusher.authenticateUser(socketId, user);
-  return { data: { auth, userData }, status: 200 };
+  try {
+    const { auth, user_data: userData } = pusher.authenticateUser(socketId, user);
+    return { data: { auth, userData }, status: 200 };
+  } catch {
+    return { data: null, status: 403 };
+  }
 };
