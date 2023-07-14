@@ -1,11 +1,11 @@
 'use client';
 
-import { PusherContext } from './PusherContext';
-import { channelSubscriptionErrorHandler } from './handlers/channel/subscriptionError';
-import { channelSubscriptionSucceededHandler } from './handlers/channel/subscriptionSucceeded';
-import { connectionErrorHandler } from './handlers/connection/error';
-import { connectionStateChangeHandler } from './handlers/connection/stateChange';
-import { ConnectionState } from './types/ConnectionState';
+import { PusherContext } from '../const/PusherContext';
+import { channelSubscriptionErrorHandler } from '../handlers/channel/subscriptionError';
+import { channelSubscriptionSucceededHandler } from '../handlers/channel/subscriptionSucceeded';
+import { connectionErrorHandler } from '../handlers/connection/error';
+import { connectionStateChangeHandler } from '../handlers/connection/stateChange';
+import { ConnectionState } from '../types/ConnectionState';
 import { graphql } from '@/graphql/generated';
 import { CallEventData } from '@/graphql/generated/graphql';
 import { useToast } from '@/hooks/useToast';

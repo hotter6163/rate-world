@@ -1,6 +1,6 @@
 'use client';
 
-import { ConnectionState, usePusher } from '@/libs/pusher/client';
+import { ConnectionState, usePusher } from '@/features/socket';
 import { FC } from 'react';
 
 export const Text: FC = () => {

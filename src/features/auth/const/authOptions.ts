@@ -1,4 +1,4 @@
-import prismaClient from '@/libs/prisma';
+import prisma from '@/libs/prisma';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { AuthOptions } from 'next-auth';
 import LineProvider from 'next-auth/providers/line';
@@ -10,5 +10,5 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.LINE_CLIENT_SECRET ?? '',
     }),
   ],
-  adapter: PrismaAdapter(prismaClient),
+  adapter: PrismaAdapter(prisma),
 };
