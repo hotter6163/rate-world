@@ -8,7 +8,7 @@ import { connectionStateChangeHandler } from '../handlers/connection/stateChange
 import { ConnectionState } from '../types/ConnectionState';
 import { graphql } from '@/graphql/generated';
 import { CallEventData } from '@/graphql/generated/graphql';
-import { useToast } from '@/hooks/useToast';
+import { errorToast, successToast } from '@/libs/toast';
 import { useMutation } from '@apollo/client';
 import { useSession } from 'next-auth/react';
 import Pusher, { Channel } from 'pusher-js';
@@ -56,7 +56,6 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
   const [error, setError] = useState('');
   const [channel, setChannel] = useState<Channel | null>(null);
   const { status } = useSession();
-  const { errorMessage, successMessage } = useToast();
   const [authenticate] = useMutation(authenticateUser, {
     fetchPolicy: 'no-cache',
   });
@@ -73,12 +72,12 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
 
   const connect = () => {
     if (pusherRef.current && pusherRef.current.connection.state !== ConnectionState.Disconnected) {
-      errorMessage('既にサーバーに接続されています。');
+      errorToast('既にサーバーに接続されています。');
       return;
     }
 
     if (status !== 'authenticated') {
-      errorMessage('ログインしてください。');
+      errorToast('ログインしてください。');
       return;
     }
 
@@ -120,15 +119,15 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
 
     pusher.signin();
 
-    pusher.connection.bind('error', connectionErrorHandler(setError, errorMessage));
-    pusher.connection.bind('state_change', connectionStateChangeHandler(setState, successMessage));
+    pusher.connection.bind('error', connectionErrorHandler(setError));
+    pusher.connection.bind('state_change', connectionStateChangeHandler(setState));
 
     pusherRef.current = pusher;
   };
 
   const disconnect = () => {
     if (!pusherRef.current) {
-      errorMessage('サーバーに接続されていません。');
+      errorToast('サーバーに接続されていません。');
       return;
     }
     unsubscribe();
@@ -138,7 +137,7 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
 
   const subscribe = (channelName: string) => {
     if (!pusherRef.current) {
-      errorMessage('サーバーに接続されていません。');
+      errorToast('サーバーに接続されていません。');
       return;
     }
     const channel = pusherRef.current.subscribe(channelName);
@@ -146,16 +145,16 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
       'pusher:subscription_succeeded',
       channelSubscriptionSucceededHandler(channelName, () => {
         setChannel(channel);
-        successMessage('チャンネルに接続されました。');
+        successToast('チャンネルに接続されました。');
       }),
     );
-    channel.bind('pusher:subscription_error', channelSubscriptionErrorHandler(errorMessage));
+    channel.bind('pusher:subscription_error', channelSubscriptionErrorHandler);
     channel.bind('test', (data: any) => console.log(data));
   };
 
   const unsubscribe = () => {
     if (!channel) {
-      errorMessage('チャンネルに接続されていません。');
+      errorToast('チャンネルに接続されていません。');
       return;
     }
     channel.unsubscribe();
@@ -168,7 +167,7 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
     isSocketIdToSend: boolean = true,
   ) => {
     if (!channel) {
-      errorMessage('チャンネルに接続されていません。');
+      errorToast('チャンネルに接続されていません。');
       return;
     }
     const { data: result } = await call({
@@ -182,7 +181,7 @@ export const PusherProvider: React.FC<Props> = ({ children }) => {
       },
     });
     if (!result?.callEvent.success)
-      errorMessage(result?.callEvent.message ?? 'エラーが発生しました。');
+      errorToast(result?.callEvent.message ?? 'エラーが発生しました。');
   };
 
   return (
