@@ -1,4 +1,4 @@
-import { MutationResolvers } from '@/libs/gql/generated/resolvers-types';
+import { MutationResolvers } from '@/graphql/generated/resolvers-types';
 
 export const callEventMutation: MutationResolvers['callEvent'] = async (
   _,

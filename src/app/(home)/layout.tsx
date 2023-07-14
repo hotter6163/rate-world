@@ -1,6 +1,6 @@
 import { Header } from '@/components/layout/Header';
 import { getServerSession } from '@/features/auth/utils/getServerSession';
-import { graphql } from '@/libs/gql/generated';
+import { graphql } from '@/graphql/generated';
 import { FC, ReactNode } from 'react';
 
 interface Props {

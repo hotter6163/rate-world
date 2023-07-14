@@ -1,7 +1,7 @@
 import './globals.css';
 import { Toast } from '@/components/Toast';
 import { SessionProvider, getServerSession } from '@/features/auth';
-import { ApolloProvider } from '@/libs/gql/client';
+import { ApolloProvider } from '@/libs/apollo';
 import { PusherProvider } from '@/libs/pusher/client';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';

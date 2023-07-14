@@ -1,4 +1,4 @@
-import { MutationResolvers } from '@/libs/gql/generated/resolvers-types';
+import { MutationResolvers } from '@/graphql/generated/resolvers-types';
 import Pusher from 'pusher';
 
 export const authorizeChannelMutation: MutationResolvers['authorizeChannel'] = async (

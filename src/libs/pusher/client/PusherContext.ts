@@ -1,7 +1,7 @@
 'use client';
 
 import { ConnectionState } from './types/ConnectionState';
-import { CallEventData } from '@/libs/gql/generated/graphql';
+import { CallEventData } from '@/graphql/generated/graphql';
 import { Channel } from 'pusher-js';
 import { createContext } from 'react';
 

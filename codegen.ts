@@ -2,20 +2,20 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: './src/libs/gql/schema/**/*.graphql',
+  schema: './src/apollo/schema/**/*.graphql',
   documents: ['src/**/*.tsx', 'src/**/*.ts'],
   ignoreNoDocuments: true,
   generates: {
-    './src/libs/gql/generated/': {
+    './src/apollo/generated/': {
       preset: 'client',
       config: {
         dedupeFragments: true,
         avoidOptionals: true,
       },
     },
-    './src/libs/gql/generated/resolvers-types.ts': {
+    './src/apollo/generated/resolvers-types.ts': {
       config: {
-        contextType: '@/libs/gql/server/context#Context',
+        contextType: '@/graphql/context#Context',
         mapperTypeSuffix: 'Model',
         mappers: {
           User: '@prisma/client/index.d#User',
@@ -24,7 +24,7 @@ const config: CodegenConfig = {
       },
       plugins: ['typescript', 'typescript-resolvers'],
     },
-    './src/libs/gql/generated/schema.graphql': {
+    './src/apollo/generated/schema.graphql': {
       plugins: ['schema-ast'],
     },
   },

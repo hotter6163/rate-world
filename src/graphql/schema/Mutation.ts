@@ -1,5 +1,5 @@
 import { authenticateUserMutation, authorizeChannelMutation, callEventMutation } from './pusher';
-import { MutationResolvers } from '@/libs/gql/generated/resolvers-types';
+import { MutationResolvers } from '@/graphql/generated/resolvers-types';
 
 export const Mutation: MutationResolvers = {
   authenticateUser: authenticateUserMutation,

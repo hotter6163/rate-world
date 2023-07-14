@@ -6,9 +6,9 @@ import { channelSubscriptionSucceededHandler } from './handlers/channel/subscrip
 import { connectionErrorHandler } from './handlers/connection/error';
 import { connectionStateChangeHandler } from './handlers/connection/stateChange';
 import { ConnectionState } from './types/ConnectionState';
+import { graphql } from '@/graphql/generated';
+import { CallEventData } from '@/graphql/generated/graphql';
 import { useToast } from '@/hooks/useToast';
-import { graphql } from '@/libs/gql/generated';
-import { CallEventData } from '@/libs/gql/generated/graphql';
 import { useMutation } from '@apollo/client';
 import { useSession } from 'next-auth/react';
 import Pusher, { Channel } from 'pusher-js';

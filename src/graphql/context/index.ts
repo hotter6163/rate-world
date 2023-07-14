@@ -1,5 +1,5 @@
+import pusher from './pusher';
 import prismaClient from '@/libs/prisma';
-import pusher from '@/libs/pusher/server';
 import { PrismaClient } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import Pusher from 'pusher';

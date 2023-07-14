@@ -1,3 +1,3 @@
-import { apolloServer } from '@/libs/gql/server';
+import { apolloServer } from '@/graphql';
 
 export { apolloServer as GET, apolloServer as POST };
