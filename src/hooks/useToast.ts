@@ -9,7 +9,9 @@ type Option = Partial<
   >
 >;
 
-export const useToast = () => ({
+export type ToastFunction = (message: string, options?: Option) => string;
+
+export const useToast = (): { [key: string]: ToastFunction } => ({
   notifyMessage: (message: string, options?: Option) =>
     toast(message, {
       duration: 3000,
@@ -19,13 +21,13 @@ export const useToast = () => ({
   successMessage: (message: string, options?: Option) =>
     toast.success(message, {
       duration: 3000,
-      position: 'bottom-center',
+      position: 'top-center',
       ...options,
     }),
   errorMessage: (message: string, options?: Option) =>
     toast.error(message, {
       duration: 3000,
-      position: 'bottom-center',
+      position: 'top-center',
       ...options,
     }),
 });

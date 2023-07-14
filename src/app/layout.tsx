@@ -1,6 +1,8 @@
 import './globals.css';
 import { Toast } from '@/components/Toast';
 import { SessionProvider, getServerSession } from '@/libs/auth';
+import { ApolloProvider } from '@/libs/gql/client';
+import { PusherProvider } from '@/libs/pusher/client';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { FC, ReactNode } from 'react';
@@ -29,8 +31,12 @@ const RootLayout: FC<Props> = async ({ modal, children }) => {
     <html lang="jp">
       <body className={inter.className}>
         <SessionProvider session={session}>
-          {children}
-          {modal}
+          <ApolloProvider>
+            <PusherProvider>
+              {children}
+              {modal}
+            </PusherProvider>
+          </ApolloProvider>
         </SessionProvider>
         <Toast />
       </body>

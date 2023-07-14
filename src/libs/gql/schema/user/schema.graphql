@@ -3,22 +3,8 @@ type Query {
   user(id: ID!): User
 }
 
-type Mutation {
-  createUser(input: CreateUserInput!): CreateUserPayload
-}
-
 type User {
   id: ID!
   name: String!
   age: Int!
-}
-
-input CreateUserInput {
-  name: String!
-  age: String!
-  email: String!
-}
-
-type CreateUserPayload {
-  user: User!
 }
