@@ -1,6 +1,6 @@
 import './globals.css';
 import { Toast } from '@/components/Toast';
-import { SessionProvider, getServerSession } from '@/libs/auth';
+import { SessionProvider, getServerSession } from '@/features/auth';
 import { ApolloProvider } from '@/libs/gql/client';
 import { PusherProvider } from '@/libs/pusher/client';
 import { Metadata } from 'next';

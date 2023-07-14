@@ -1,4 +1,4 @@
-import { SignInForm } from '@/features/auth/signin';
+import { SignInForm } from '@/features/auth';
 import { Metadata } from 'next';
 import { FC } from 'react';
 
