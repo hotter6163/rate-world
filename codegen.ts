@@ -2,18 +2,18 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: './src/apollo/schema/**/*.graphql',
+  schema: './src/graphql/schema/**/*.graphql',
   documents: ['src/**/*.tsx', 'src/**/*.ts'],
   ignoreNoDocuments: true,
   generates: {
-    './src/apollo/generated/': {
+    './src/graphql/generated/': {
       preset: 'client',
       config: {
         dedupeFragments: true,
         avoidOptionals: true,
       },
     },
-    './src/apollo/generated/resolvers-types.ts': {
+    './src/graphql/generated/resolvers-types.ts': {
       config: {
         contextType: '@/graphql/context#Context',
         mapperTypeSuffix: 'Model',
@@ -24,7 +24,7 @@ const config: CodegenConfig = {
       },
       plugins: ['typescript', 'typescript-resolvers'],
     },
-    './src/apollo/generated/schema.graphql': {
+    './src/graphql/generated/schema.graphql': {
       plugins: ['schema-ast'],
     },
   },
