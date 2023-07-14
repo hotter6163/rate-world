@@ -1,15 +1,11 @@
 type Mutation {
   authenticateUser(input: AuthenticateUserInput!): AuthenticateUserPayload!
   authorizeChannel(input: AuthorizeChannelInput!): AuthorizeChannelPayload!
+  callEvent(input: CallEventInput!): CallEventPayload!
 }
 
 input AuthenticateUserInput {
   socketId: String!
-}
-
-input AuthorizeChannelInput {
-  socketId: String!
-  channelName: String!
 }
 
 type AuthenticateUserPayload {
@@ -22,6 +18,11 @@ type AuthenticateUserData {
   userData: String!
 }
 
+input AuthorizeChannelInput {
+  socketId: String!
+  channelName: String!
+}
+
 type AuthorizeChannelPayload {
   data: AuthorizeChannelData
   status: Int!
@@ -31,4 +32,21 @@ type AuthorizeChannelData {
   auth: String!
   channelData: String
   sharedSecret: String
+}
+
+input CallEventInput {
+  socketId: String
+  channel: String!
+  event: String!
+  data: [CallEventData!]
+}
+
+input CallEventData {
+  key: String!
+  value: String!
+}
+
+type CallEventPayload {
+  success: Boolean!
+  message: String
 }

@@ -1,3 +1,5 @@
-export const channelSubscriptionSucceededHandler = (channelName: string) => () => {
-  console.info('subscription_succeeded', channelName);
-};
+export const channelSubscriptionSucceededHandler =
+  (channelName: string, callback: () => void) => () => {
+    callback();
+    console.info('subscription_succeeded', channelName);
+  };
