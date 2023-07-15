@@ -1,38 +1,29 @@
 'use client';
 
 import { ConnectionState } from '../types/ConnectionState';
-import { CallEventData } from '@/graphql/generated/graphql';
-import { Channel } from 'pusher-js';
-import { createContext } from 'react';
+import PusherJs, { Channel } from 'pusher-js';
+import { Dispatch, SetStateAction, createContext } from 'react';
 
 interface Context {
+  pusher: PusherJs | null;
   channel: Channel | null;
   state: ConnectionState;
-  error: string;
-  connect: () => void;
-  disconnect: () => void;
-  subscribe: (channel: string) => void;
-  unsubscribe: () => void;
-  triggerEvent: (event: string, data?: CallEventData[], isSocketIdToSend?: boolean) => void;
+  setPusher: Dispatch<SetStateAction<PusherJs | null>>;
+  setChannel: Dispatch<SetStateAction<Channel | null>>;
+  setState: Dispatch<SetStateAction<ConnectionState>>;
 }
 
 export const PusherContext = createContext<Context>({
+  pusher: null,
   channel: null,
   state: ConnectionState.Disconnected,
-  error: '',
-  connect: () => {
-    throw new Error('Connect function must be overridden');
+  setPusher: () => {
+    throw new Error('SetPusher function must be overridden');
   },
-  disconnect: () => {
-    throw new Error('Disconnect function must be overridden');
+  setChannel: () => {
+    throw new Error('SetChannel function must be overridden');
   },
-  subscribe: () => {
-    throw new Error('Subscribe function must be overridden');
-  },
-  unsubscribe: () => {
-    throw new Error('Unsubscribe function must be overridden');
-  },
-  triggerEvent: () => {
-    throw new Error('TriggerEvent function must be overridden');
+  setState: () => {
+    throw new Error('setState function must be overridden');
   },
 });
