@@ -1,8 +1,8 @@
 import './globals.css';
 import { Toast } from '@/components/Toast';
-import { SessionProvider, getServerSession } from '@/libs/auth';
-import { ApolloProvider } from '@/libs/gql/client';
-import { PusherProvider } from '@/libs/pusher/client';
+import { SessionProvider, getServerSession } from '@/features/auth';
+import { PusherProvider } from '@/features/socket';
+import { ApolloProvider } from '@/libs/apollo';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { FC, ReactNode } from 'react';

@@ -1,10 +1,23 @@
 'use client';
 
-import { ConnectionState, usePusher } from '@/libs/pusher/client';
+import {
+  ConnectionState,
+  useCallEvent,
+  useConnect,
+  useDisconnect,
+  usePusher,
+  useSubscribe,
+  useUnsubscribe,
+} from '@/features/socket';
 import { FC } from 'react';
 
 export const Text: FC = () => {
-  const { channel, state, connect, disconnect, subscribe, unsubscribe, triggerEvent } = usePusher();
+  const { channel, state } = usePusher();
+  const { connect } = useConnect();
+  const { disconnect } = useDisconnect();
+  const { subscribe } = useSubscribe();
+  const { unsubscribe } = useUnsubscribe();
+  const { callEvent } = useCallEvent();
 
   return (
     <div className="flex flex-col items-start gap-2">
@@ -19,7 +32,7 @@ export const Text: FC = () => {
               <p>{channel.name}</p>
               <button
                 onClick={() =>
-                  triggerEvent('test', [{ key: 'message', value: 'Hello, Pusher event!' }], false)
+                  callEvent('test', [{ key: 'message', value: 'Hello, Pusher event!' }], false)
                 }
               >
                 Trigger Event

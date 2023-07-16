@@ -1,5 +1,5 @@
 import { InterceptDialog } from '@/components/InterceptDialog';
-import { SignInForm } from '@/features/auth/signin';
+import { SignInForm } from '@/features/auth';
 import { FC } from 'react';
 
 const SignInIntercept: FC = () => {
