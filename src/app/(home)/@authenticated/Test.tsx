@@ -9,6 +9,8 @@ import {
   useSubscribe,
   useUnsubscribe,
 } from '@/features/socket';
+import { Game } from '@/games/Game';
+import { getChannelName } from '@/libs/pusher';
 import { FC } from 'react';
 
 export const Text: FC = () => {
@@ -40,7 +42,13 @@ export const Text: FC = () => {
               <button onClick={() => unsubscribe()}>Unsubscribe</button>
             </>
           ) : (
-            <button onClick={() => subscribe('private-test-matching')}>Subscribe</button>
+            <button
+              onClick={() =>
+                subscribe(getChannelName({ prefix: 'private', game: Game.BattleLine }))
+              }
+            >
+              Subscribe
+            </button>
           )}
           <button onClick={disconnect}>Disconnect</button>
         </>
