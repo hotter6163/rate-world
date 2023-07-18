@@ -4,6 +4,7 @@ import { setBattleLine } from '@/libs/kv';
 import { Channel, splitChannelName } from '@/libs/pusher';
 import { User } from '@prisma/client';
 import { VercelKV } from '@vercel/kv';
+import dayjs from 'dayjs';
 import Pusher, { ChannelAuthResponse } from 'pusher';
 
 export const authorizeChannelMutation: MutationResolvers['authorizeChannel'] = async (
@@ -41,6 +42,8 @@ export const authorizeChannelMutation: MutationResolvers['authorizeChannel'] = a
   }
 };
 
+const TIMEOUT_S = 90;
+
 const matchingHandler = async ({
   pusher,
   socketId,
@@ -65,7 +68,11 @@ const matchingHandler = async ({
 
   switch (game) {
     case Game.BattleLine:
-      await setBattleLine(kv, user);
+      await setBattleLine(kv, {
+        user,
+        timeoutAt: dayjs().add(TIMEOUT_S, 'seconds').toDate(),
+        rate: 0,
+      });
       break;
   }
 
