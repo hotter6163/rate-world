@@ -4,6 +4,7 @@ export type Channel =
   | {
       prefix: 'private';
       game: Game;
+      id: 'matching';
     }
   | {
       prefix: 'presence';
@@ -11,14 +12,13 @@ export type Channel =
       id: string;
     };
 
-export const getChannelName = (arg: Channel) =>
-  `${arg.prefix}-${arg.game}-${arg.prefix === 'private' ? 'matching' : arg.id}`;
+export const getChannelName = ({ prefix, game, id }: Channel) => `${prefix}-${game}-${id}`;
 
 export const splitChannelName = (channelName: string): Channel => {
   const [prefix, game, id] = channelName.split('-') as [string, Game, string];
   switch (prefix) {
     case 'private':
-      return { prefix, game };
+      return { prefix, game, id: 'matching' };
     case 'presence':
       return { prefix, game, id };
     default:
