@@ -36,7 +36,7 @@ type AuthorizeChannelData {
 
 input CallEventInput {
   socketId: String
-  channel: String!
+  channelName: String!
   event: String!
   data: [CallEventData!]
 }

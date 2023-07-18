@@ -34,7 +34,7 @@ export const useCallEvent = () => {
       const { data: result } = await call({
         variables: {
           input: {
-            channel: channel.name,
+            channelName: channel.name,
             event,
             data,
             socketId: isSocketIdToSend ? pusher?.connection.socket_id ?? null : null,
