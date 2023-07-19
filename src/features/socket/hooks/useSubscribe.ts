@@ -13,7 +13,20 @@ export const useSubscribe = () => {
       return;
     }
     const channel = pusher.subscribe(channelName);
-    setupChannelCommon(channel, { channelName, setChannel });
+    const existedChannel = pusher.channel(channelName);
+    if (existedChannel) {
+      existedChannel.subscribe();
+    } else {
+      const newChannel = pusher.subscribe(channelName);
+      newChannel.bind(
+        'pusher:subscription_succeeded',
+        channelSubscriptionSucceededHandler(channelName, () => {
+          setChannel(channel);
+          successToast('チャンネルに接続されました。');
+        }),
+      );
+      newChannel.bind('pusher:subscription_error', channelSubscriptionErrorHandler());
+    }
   };
 
   return { subscribe };

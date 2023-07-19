@@ -1,6 +1,7 @@
 'use client';
 
-import { setupConnection } from '../handlers/connection';
+import { connectionErrorHandler } from '../handlers/connection/error';
+import { connectionStateChangeHandler } from '../handlers/connection/stateChange';
 import { ConnectionState } from '../types/ConnectionState';
 import { usePusher } from './usePusher';
 import { graphql } from '@/graphql/generated';
@@ -90,7 +91,8 @@ export const useConnect = () => {
     });
 
     newPusher.signin();
-    setupConnection(newPusher, { setState });
+    newPusher.bind('state_change', connectionStateChangeHandler(setState));
+    newPusher.bind('error', connectionErrorHandler());
     setPusher(newPusher);
   };
 
