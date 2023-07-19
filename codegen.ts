@@ -18,6 +18,7 @@ const config: CodegenConfig = {
         contextType: '@/graphql/context#Context',
         mapperTypeSuffix: 'Model',
         mappers: {
+          MatchingResult: '@/graphql/schema/pusher/mappers#MatchingResult',
           User: '@prisma/client/index.d#User',
         },
         useIndexSignature: true,
