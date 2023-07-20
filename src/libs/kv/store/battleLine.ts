@@ -8,5 +8,10 @@ export interface BattleLineStoreItem {
   rate: number;
 }
 
-export const setBattleLine = (kv: VercelKV, ...data: BattleLineStoreItem[]) =>
-  kv.lpush<BattleLineStoreItem>(Game.BattleLine, ...data);
+export const setBattleLine = async (kv: VercelKV, ...data: BattleLineStoreItem[]) => {
+  const store = await kv.lrange<BattleLineStoreItem>(Game.BattleLine, 0, -1);
+  const existed = store.filter((row) => data.map(({ user: { id } }) => id).includes(row.user.id));
+  await Promise.all(existed.map((row) => kv.lrem(Game.BattleLine, 1, row)));
+
+  return kv.lpush<BattleLineStoreItem>(Game.BattleLine, ...data);
+};
