@@ -91,8 +91,8 @@ export const useConnect = () => {
     });
 
     newPusher.signin();
-    newPusher.bind('state_change', connectionStateChangeHandler(setState));
-    newPusher.bind('error', connectionErrorHandler());
+    newPusher.connection.bind('state_change', connectionStateChangeHandler(setState));
+    newPusher.connection.bind('error', connectionErrorHandler());
     setPusher(newPusher);
   };
 

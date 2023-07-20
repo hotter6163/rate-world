@@ -22,6 +22,7 @@ export const useSubscribe = () => {
         'pusher:subscription_succeeded',
         channelSubscriptionSucceededHandler(channelName, () => {
           setChannel(channel);
+          setChannel(newChannel);
           successToast('チャンネルに接続されました。');
         }),
       );
