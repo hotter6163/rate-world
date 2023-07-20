@@ -1,9 +1,9 @@
-import { MatchingResultType, MutationResolvers } from '@/graphql/generated/resolvers-types';
+import { CreateMatchingResultType, MutationResolvers } from '@/graphql/generated/resolvers-types';
 import { BattleLineStoreItem } from '@/libs/kv';
 import { getChannelName, splitChannelName } from '@/libs/pusher';
 import dayjs from 'dayjs';
 
-export const matchingMutation: MutationResolvers['matching'] = async (
+export const createMatchingMutation: MutationResolvers['createMatching'] = async (
   _,
   { input: { channelName } },
   { token, dataSources: { session }, kv, pusher },
@@ -22,14 +22,16 @@ export const matchingMutation: MutationResolvers['matching'] = async (
   const user = matchingData.find((item) => item.user.id === userId);
   if (!user) return { result: null, status: 400 };
 
-  const opponents = matchingData.filter((item) => item.user.id !== userId);
+  const opponents = matchingData.filter(
+    (item) => item.user.id !== userId && dayjs().isBefore(item.timeoutAt),
+  );
   if (opponents.length === 0) {
     const isTimeout = dayjs().isAfter(user.timeoutAt);
     if (isTimeout) {
       await kv.lrem(channel.game, 0, user);
-      return { result: { type: MatchingResultType.Timeout }, status: 200 };
+      return { result: { type: CreateMatchingResultType.Timeout }, status: 200 };
     } else {
-      return { result: { type: MatchingResultType.Retry }, status: 200 };
+      return { result: { type: CreateMatchingResultType.Retry }, status: 200 };
     }
   }
 
@@ -41,7 +43,7 @@ export const matchingMutation: MutationResolvers['matching'] = async (
     pusher.sendToUser(opponent.user.id, 'matched', { roomId }),
   ]);
   return {
-    result: { type: MatchingResultType.Success, roomId },
+    result: { type: CreateMatchingResultType.Success, roomId },
     status: 200,
   };
 };

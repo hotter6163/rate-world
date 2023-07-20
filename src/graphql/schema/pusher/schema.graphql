@@ -2,7 +2,7 @@ type Mutation {
   authenticateUser(input: AuthenticateUserInput!): AuthenticateUserPayload!
   authorizeChannel(input: AuthorizeChannelInput!): AuthorizeChannelPayload!
   callEvent(input: CallEventInput!): CallEventPayload!
-  matching(input: MatchingInput!): MatchingPayload!
+  createMatching(input: CreateMatchingInput!): CreateMatchingPayload!
 }
 
 input AuthenticateUserInput {
@@ -52,34 +52,34 @@ type CallEventPayload {
   message: String
 }
 
-input MatchingInput {
+input CreateMatchingInput {
   channelName: String!
 }
 
-type MatchingPayload {
-  result: MatchingResult
+type CreateMatchingPayload {
+  result: CreateMatchingResult
   status: Int!
 }
 
-interface MatchingResult {
-  type: MatchingResultType!
+interface CreateMatchingResult {
+  type: CreateMatchingResultType!
 }
 
-enum MatchingResultType {
+enum CreateMatchingResultType {
   SUCCESS
   RETRY
   TIMEOUT
 }
 
-type MatchingSuccess implements MatchingResult {
-  type: MatchingResultType!
+type MatchingSuccess implements CreateMatchingResult {
+  type: CreateMatchingResultType!
   roomId: ID!
 }
 
-type MatchingRetry implements MatchingResult {
-  type: MatchingResultType!
+type MatchingRetry implements CreateMatchingResult {
+  type: CreateMatchingResultType!
 }
 
-type MatchingTimeout implements MatchingResult {
-  type: MatchingResultType!
+type MatchingTimeout implements CreateMatchingResult {
+  type: CreateMatchingResultType!
 }
