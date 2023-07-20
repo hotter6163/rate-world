@@ -1,18 +1,27 @@
 'use client';
 
-import { setupChannelCommon } from '../handlers/channel';
+import { channelSubscriptionErrorHandler } from '../handlers/channel/subscriptionError';
+import { channelSubscriptionSucceededHandler } from '../handlers/channel/subscriptionSucceeded';
 import { usePusher } from './usePusher';
-import { errorToast } from '@/libs/toast';
+import { errorToast, successToast } from '@/libs/toast';
 
 export const useSubscribe = () => {
-  const { pusher, setChannel } = usePusher();
+  const { pusher, channel, setChannel } = usePusher();
 
-  const subscribe = (channelName: string) => {
+  const subscribe = (channelName: string, force: boolean = false) => {
     if (!pusher) {
       errorToast('サーバーに接続されていません。');
       return;
     }
-    const channel = pusher.subscribe(channelName);
+    if (channel && !force) {
+      errorToast('チャンネルに接続されています。');
+      return;
+    }
+
+    if (channel) {
+      channel.unsubscribe();
+    }
+
     const existedChannel = pusher.channel(channelName);
     if (existedChannel) {
       existedChannel.subscribe();
@@ -21,7 +30,6 @@ export const useSubscribe = () => {
       newChannel.bind(
         'pusher:subscription_succeeded',
         channelSubscriptionSucceededHandler(channelName, () => {
-          setChannel(channel);
           setChannel(newChannel);
           successToast('チャンネルに接続されました。');
         }),
