@@ -5,6 +5,7 @@ import {
   useCallEvent,
   useConnect,
   useDisconnect,
+  useMatching,
   usePusher,
   useSubscribe,
   useUnsubscribe,
@@ -20,6 +21,7 @@ export const Text: FC = () => {
   const { subscribe } = useSubscribe();
   const { unsubscribe } = useUnsubscribe();
   const { callEvent } = useCallEvent();
+  useMatching();
 
   return (
     <div className="flex flex-col items-start gap-2">
@@ -34,7 +36,7 @@ export const Text: FC = () => {
               <p>{channel.name}</p>
               <button
                 onClick={() =>
-                  callEvent('test', [{ key: 'message', value: 'Hello, Pusher event!' }], false)
+                  callEvent('matching', [{ key: 'roomId', value: 'matching room id' }], false)
                 }
               >
                 Trigger Event
@@ -44,7 +46,9 @@ export const Text: FC = () => {
           ) : (
             <button
               onClick={() =>
-                subscribe(getChannelName({ prefix: 'private', game: Game.BattleLine }))
+                subscribe(
+                  getChannelName({ prefix: 'private', game: Game.BattleLine, id: 'matching' }),
+                )
               }
             >
               Subscribe
