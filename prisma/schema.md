@@ -3,10 +3,10 @@ erDiagram
 
   "Account" {
     String id "🗝️"
-    String user_id
-    String type
-    String provider
-    String provider_account_id
+    String user_id 
+    String type 
+    String provider 
+    String provider_account_id 
     String refresh_token "❓"
     String access_token "❓"
     Int expires_at "❓"
@@ -17,15 +17,15 @@ erDiagram
     String oauth_token_secret "❓"
     String oauth_token "❓"
     }
-
+  
 
   "Session" {
     String id "🗝️"
-    String session_token
-    String user_id
-    DateTime expires
+    String session_token 
+    String user_id 
+    DateTime expires 
     }
-
+  
 
   "User" {
     String id "🗝️"
@@ -34,15 +34,15 @@ erDiagram
     DateTime emailVerified "❓"
     String image "❓"
     }
-
+  
 
   "VerificationToken" {
     Int id "🗝️"
-    String identifier
-    String token
-    DateTime expires
+    String identifier 
+    String token 
+    DateTime expires 
     }
-
+  
     "Account" o|--|| "User" : "user"
     "Session" o|--|| "User" : "user"
     "User" o{--}o "Account" : "accounts"

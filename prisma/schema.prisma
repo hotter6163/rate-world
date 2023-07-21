@@ -8,7 +8,7 @@ generator client {
 
 generator erd {
   provider = "prisma-erd-generator"
-  output = "../schema.md"
+  output = "./schema.md"
 }
 
 datasource db {
