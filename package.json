@@ -8,10 +8,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\" && prisma format",
+    "format": "concurrently \"yarn prettier:format\" \"yarn prisma:format\"",
+    "prettier:format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "codegen": "graphql-codegen --config codegen.ts",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
+    "prisma:format": "prisma format",
     "studio": "prisma studio"
   },
   "dependencies": {
