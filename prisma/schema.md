@@ -2,16 +2,16 @@
 erDiagram
 
         game {
-            BATTLE_LINE BATTLE_LINE
+            BATTLE_LINE battleLine
         }
     
 
 
         ArenaStatus {
-            MATCHING MATCHING
-IN_PROGRESS IN_PROGRESS
-COMPLETED COMPLETED
-CANCELED CANCELED
+            MATCHING matching
+IN_PROGRESS inProgress
+COMPLETED completed
+CANCELED canceled
         }
     
   "accounts" {
@@ -67,7 +67,7 @@ CANCELED CANCELED
     }
   
 
-  "participants" {
+  "arena_participants" {
     String arena_id 
     String participant_id 
     Int participant_rate 
@@ -79,13 +79,13 @@ CANCELED CANCELED
     "sessions" o|--|| "users" : "user"
     "users" o{--}o "accounts" : "accounts"
     "users" o{--}o "sessions" : "sessions"
-    "users" o{--}o "participants" : "arenaRecords"
+    "users" o{--}o "arena_participants" : "arenaRecords"
     "users" o{--}o "UserGame" : "games"
     "UserGame" o|--|| "Game" : "enum:game"
     "UserGame" o|--|| "users" : "user"
     "arenas" o|--|| "Game" : "enum:game"
     "arenas" o|--|| "ArenaStatus" : "enum:status"
-    "arenas" o{--}o "participants" : "participants"
-    "participants" o|--|| "arenas" : "arena"
-    "participants" o|--|| "users" : "participant"
+    "arenas" o{--}o "arena_participants" : "participants"
+    "arena_participants" o|--|| "arenas" : "arena"
+    "arena_participants" o|--|| "users" : "participant"
 ```

@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 generator erd {
@@ -66,7 +66,7 @@ model User {
 }
 
 enum Game {
-  BATTLE_LINE
+  BATTLE_LINE @map("battleLine")
 
   @@map("game")
 }
@@ -96,10 +96,10 @@ model Arena {
 }
 
 enum ArenaStatus {
-  MATCHING
-  IN_PROGRESS
-  COMPLETED
-  CANCELED
+  MATCHING    @map("matching")
+  IN_PROGRESS @map("inProgress")
+  COMPLETED   @map("completed")
+  CANCELED    @map("canceled")
 }
 
 model ArenaParticipant {
@@ -113,5 +113,5 @@ model ArenaParticipant {
   participant User  @relation(fields: [participantId], references: [id])
 
   @@id([arenaId, participantId])
-  @@map("participants")
+  @@map("arena_participants")
 }
