@@ -107,7 +107,7 @@ model ArenaParticipant {
   participantId  String       @map("participant_id")
   matchRating    Int          @map("match_rating")
   matchResult    MatchResult? @map("match_result")
-  participatedAt DateTime?    @map("participant_at")
+  participatedAt DateTime?    @map("participanted_at")
 
   arena       Arena @relation(fields: [arenaId], references: [id])
   participant User  @relation(fields: [participantId], references: [id])

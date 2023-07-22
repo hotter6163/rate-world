@@ -81,7 +81,7 @@ NOT_SHOW notShow
     String participant_id 
     Int match_rating 
     MatchResult match_result "❓"
-    DateTime participant_at "❓"
+    DateTime participanted_at "❓"
     }
   
     "accounts" o|--|| "users" : "user"
