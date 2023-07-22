@@ -2,7 +2,7 @@ import { Game } from '@/games/Game';
 import { MutationResolvers } from '@/graphql/generated/resolvers-types';
 import { setBattleLine } from '@/libs/kv';
 import { Channel, splitChannelName } from '@/libs/pusher';
-import { User } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 import { VercelKV } from '@vercel/kv';
 import dayjs from 'dayjs';
 import Pusher, { ChannelAuthResponse } from 'pusher';
@@ -38,7 +38,14 @@ export const authorizeChannelMutation: MutationResolvers['authorizeChannel'] = a
         kv,
       });
     case 'presence':
-      return { data: null, status: 403 };
+      return presenceHandler({
+        pusher,
+        dataSources,
+        arenaId: channel.id,
+        participantId: session.user.id,
+        socketId,
+        channel: channelName,
+      });
   }
 };
 
@@ -75,6 +82,75 @@ const matchingHandler = async ({
       });
       break;
   }
+
+  return {
+    data: {
+      auth: response.auth,
+      channelData: response.channel_data ?? null,
+      sharedSecret: response.shared_secret ?? null,
+    },
+    status: 200,
+  };
+};
+
+const presenceHandler = async ({
+  pusher,
+  dataSources: { arenaParticipant },
+  arenaId,
+  participantId,
+  socketId,
+  channel,
+}: {
+  pusher: Pusher;
+  dataSources: PrismaClient;
+  arenaId: string;
+  participantId: string;
+  socketId: string;
+  channel: string;
+}) => {
+  const data = await arenaParticipant
+    .findUnique({
+      where: { arenaId_participantId: { arenaId, participantId } },
+      select: {
+        matchRating: true,
+        matchResult: true,
+        participant: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+      },
+    })
+    .then((data) =>
+      !!data && !data.matchResult
+        ? {
+            ...data,
+            participant: {
+              user_id: data.participant.id,
+              user_info: {
+                name: data.participant.id,
+                image: data.participant.image,
+              },
+            },
+          }
+        : null,
+    );
+
+  if (!data) return { data: null, status: 403 };
+
+  let response: ChannelAuthResponse;
+  try {
+    response = pusher.authorizeChannel(socketId, channel, data.participant);
+  } catch (e) {
+    return { data: null, status: 403 };
+  }
+
+  await arenaParticipant.update({
+    where: { arenaId_participantId: { arenaId, participantId } },
+    data: { participatedAt: new Date() },
+  });
 
   return {
     data: {
