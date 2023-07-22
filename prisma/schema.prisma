@@ -66,9 +66,7 @@ model User {
 }
 
 enum Game {
-  BATTLE_LINE @map("battleLine")
-
-  @@map("game")
+  BATTLE_LINE
 }
 
 model UserGame {
@@ -96,10 +94,10 @@ model Arena {
 }
 
 enum ArenaStatus {
-  MATCHING    @map("matching")
-  IN_PROGRESS @map("inProgress")
-  COMPLETED   @map("completed")
-  CANCELED    @map("canceled")
+  MATCHING
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
 }
 
 model ArenaParticipant {
@@ -117,8 +115,8 @@ model ArenaParticipant {
 }
 
 enum MatchResult {
-  WIN      @map("win")
-  LOSE     @map("lose")
-  DRAW     @map("draw")
-  NOT_SHOW @map("notShow")
+  WIN
+  LOSE
+  DRAW
+  NOT_SHOW
 }

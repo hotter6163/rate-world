@@ -1,26 +1,26 @@
 ```mermaid
 erDiagram
 
-        game {
-            BATTLE_LINE battleLine
+        Game {
+            BATTLE_LINE BATTLE_LINE
         }
     
 
 
         ArenaStatus {
-            MATCHING matching
-IN_PROGRESS inProgress
-COMPLETED completed
-CANCELED canceled
+            MATCHING MATCHING
+IN_PROGRESS IN_PROGRESS
+COMPLETED COMPLETED
+CANCELED CANCELED
         }
     
 
 
         MatchResult {
-            WIN win
-LOSE lose
-DRAW draw
-NOT_SHOW notShow
+            WIN WIN
+LOSE LOSE
+DRAW DRAW
+NOT_SHOW NOT_SHOW
         }
     
   "accounts" {
