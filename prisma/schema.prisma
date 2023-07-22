@@ -2,13 +2,12 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["jsonProtocol"]
+  provider = "prisma-client-js"
 }
 
 generator erd {
   provider = "prisma-erd-generator"
-  output = "../schema.md"
+  output   = "./schema.md"
 }
 
 datasource db {
@@ -37,6 +36,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@map("accounts")
 }
 
 model Session {
@@ -44,24 +44,79 @@ model Session {
   sessionToken String   @unique @map("session_token")
   userId       String   @map("user_id")
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
 }
 
 model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
-  emailVerified DateTime?
+  emailVerified DateTime? @map("email_verified")
   image         String?
-  accounts      Account[]
-  sessions      Session[]
+
+  accounts     Account[]
+  sessions     Session[]
+  arenaRecords ArenaParticipant[]
+  games        UserGame[]
+
+  @@map("users")
 }
 
-model VerificationToken {
-  id         Int      @id @default(autoincrement())
-  identifier String
-  token      String   @unique
-  expires    DateTime
+enum Game {
+  BATTLE_LINE
+}
 
-  @@unique([identifier, token])
+model UserGame {
+  userId String @map("user_id")
+  game   Game
+  rating Int
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@id([userId, game])
+}
+
+model Arena {
+  id          String      @id @default(cuid())
+  game        Game
+  status      ArenaStatus
+  matchingAt  DateTime    @default(now())
+  startedAt   DateTime?   @map("stated_at")
+  completedAt DateTime?   @map("completed_at")
+  canceledAt  DateTime?   @map("canceled_at")
+
+  participants ArenaParticipant[]
+
+  @@map("arenas")
+}
+
+enum ArenaStatus {
+  MATCHING
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
+}
+
+model ArenaParticipant {
+  arenaId        String       @map("arena_id")
+  participantId  String       @map("participant_id")
+  matchRating    Int          @map("match_rating")
+  matchResult    MatchResult? @map("match_result")
+  participatedAt DateTime?    @map("participanted_at")
+
+  arena       Arena @relation(fields: [arenaId], references: [id])
+  participant User  @relation(fields: [participantId], references: [id])
+
+  @@id([arenaId, participantId])
+  @@map("arena_participants")
+}
+
+enum MatchResult {
+  WIN
+  LOSE
+  DRAW
+  NOT_SHOW
 }

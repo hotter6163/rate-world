@@ -17,3 +17,4 @@ const pusher =
 if (process.env.NODE_ENV !== 'production') globalForPusher.pusher = pusher;
 
 export default pusher;
+export * from './channelName';
