@@ -14,6 +14,15 @@ COMPLETED completed
 CANCELED canceled
         }
     
+
+
+        MatchResult {
+            WIN win
+LOSE lose
+DRAW draw
+NOT_SHOW notShow
+        }
+    
   "accounts" {
     String id "🗝️"
     String user_id 
@@ -52,7 +61,7 @@ CANCELED canceled
   "UserGame" {
     String user_id 
     Game game "🗝️"
-    Int rate 
+    Int rating 
     }
   
 
@@ -70,8 +79,8 @@ CANCELED canceled
   "arena_participants" {
     String arena_id 
     String participant_id 
-    Int participant_rate 
-    Boolean id_win "❓"
+    Int match_rating 
+    MatchResult match_result "❓"
     DateTime participant_at "❓"
     }
   
@@ -86,6 +95,7 @@ CANCELED canceled
     "arenas" o|--|| "Game" : "enum:game"
     "arenas" o|--|| "ArenaStatus" : "enum:status"
     "arenas" o{--}o "arena_participants" : "participants"
+    "arena_participants" o|--|o "MatchResult" : "enum:match_result"
     "arena_participants" o|--|| "arenas" : "arena"
     "arena_participants" o|--|| "users" : "participant"
 ```

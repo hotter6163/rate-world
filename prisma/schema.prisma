@@ -74,7 +74,7 @@ enum Game {
 model UserGame {
   userId String @map("user_id")
   game   Game
-  rate   Int
+  rating Int
 
   user User @relation(fields: [userId], references: [id])
 
@@ -103,15 +103,22 @@ enum ArenaStatus {
 }
 
 model ArenaParticipant {
-  arenaId         String    @map("arena_id")
-  participantId   String    @map("participant_id")
-  participantRate Int       @map("participant_rate")
-  isWin           Boolean?  @map("id_win")
-  participatedAt  DateTime? @map("participant_at")
+  arenaId        String       @map("arena_id")
+  participantId  String       @map("participant_id")
+  matchRating    Int          @map("match_rating")
+  matchResult    MatchResult? @map("match_result")
+  participatedAt DateTime?    @map("participant_at")
 
   arena       Arena @relation(fields: [arenaId], references: [id])
   participant User  @relation(fields: [participantId], references: [id])
 
   @@id([arenaId, participantId])
   @@map("arena_participants")
+}
+
+enum MatchResult {
+  WIN      @map("win")
+  LOSE     @map("lose")
+  DRAW     @map("draw")
+  NOT_SHOW @map("notShow")
 }
