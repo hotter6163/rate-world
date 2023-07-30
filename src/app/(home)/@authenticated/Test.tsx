@@ -2,7 +2,6 @@
 
 import {
   ConnectionState,
-  useCallEvent,
   useConnect,
   useDisconnect,
   useMatching,
@@ -20,7 +19,6 @@ export const Text: FC = () => {
   const { disconnect } = useDisconnect();
   const { subscribe } = useSubscribe();
   const { unsubscribe } = useUnsubscribe();
-  const { callEvent } = useCallEvent();
   useMatching();
 
   return (
@@ -34,13 +32,6 @@ export const Text: FC = () => {
           {channel ? (
             <>
               <p>{channel.name}</p>
-              <button
-                onClick={() =>
-                  callEvent('matching', [{ key: 'roomId', value: 'matching room id' }], false)
-                }
-              >
-                Trigger Event
-              </button>
               <button onClick={() => unsubscribe()}>Unsubscribe</button>
             </>
           ) : (
