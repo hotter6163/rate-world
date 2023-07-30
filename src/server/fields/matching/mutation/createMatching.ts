@@ -17,6 +17,7 @@ const InputRef = builder.inputRef<Input>('CreateMatchingInput').implement({
 
 interface Payload {
   result: Result | null;
+  status: number;
 }
 
 const PayloadRef = builder.objectRef<Payload>('CreateMatchingPayload').implement({
@@ -27,6 +28,7 @@ const PayloadRef = builder.objectRef<Payload>('CreateMatchingPayload').implement
       nullable: true,
       resolve: (parent) => parent.result,
     }),
+    status: t.int({ resolve: (parent) => parent.status }),
   }),
 });
 
