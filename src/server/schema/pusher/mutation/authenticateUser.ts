@@ -1,15 +1,5 @@
 import { builder } from '@/server/builder';
 
-interface Data {
-  auth: string;
-  userData: string;
-}
-
-interface Payload {
-  data: Data | null;
-  status: number;
-}
-
 interface Input {
   socketId: string;
 }
@@ -20,6 +10,11 @@ const InputRef = builder.inputRef<Input>('AuthenticateUserInput').implement({
     socketId: t.string({ required: true }),
   }),
 });
+
+interface Payload {
+  data: Data | null;
+  status: number;
+}
 
 const PayloadRef = builder.objectRef<Payload>('AuthenticateUserPayload').implement({
   description: 'Payload for authenticating a user',
@@ -32,6 +27,11 @@ const PayloadRef = builder.objectRef<Payload>('AuthenticateUserPayload').impleme
     status: t.int({ resolve: (parent) => parent.status }),
   }),
 });
+
+interface Data {
+  auth: string;
+  userData: string;
+}
 
 const DataRef = builder.objectRef<Data>('AuthenticateUserData').implement({
   description: 'Data for authenticating a user',
