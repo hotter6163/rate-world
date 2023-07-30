@@ -1,5 +1,6 @@
 import { builder } from './builder';
 import { Context, context } from './context';
+import './types/giraffe';
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { NextRequest } from 'next/server';
