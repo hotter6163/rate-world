@@ -9,8 +9,8 @@ import {
   useSubscribe,
   useUnsubscribe,
 } from '@/features/socket';
-import { Game } from '@/games/Game';
 import { getChannelName } from '@/libs/pusher';
+import { Game } from '@prisma/client';
 import { FC } from 'react';
 
 export const Text: FC = () => {
@@ -38,7 +38,7 @@ export const Text: FC = () => {
             <button
               onClick={() =>
                 subscribe(
-                  getChannelName({ prefix: 'private', game: Game.BattleLine, id: 'matching' }),
+                  getChannelName({ prefix: 'private', game: Game.BATTLE_LINE, id: 'matching' }),
                 )
               }
             >

@@ -1,8 +1,7 @@
-import { Game } from '@/games/Game';
 import { MutationResolvers } from '@/graphql/generated/resolvers-types';
 import { setBattleLine } from '@/libs/kv';
 import { Channel, splitChannelName } from '@/libs/pusher';
-import { PrismaClient, User } from '@prisma/client';
+import { Game, PrismaClient, User } from '@prisma/client';
 import { VercelKV } from '@vercel/kv';
 import dayjs from 'dayjs';
 import Pusher, { ChannelAuthResponse } from 'pusher';
@@ -74,7 +73,7 @@ const matchingHandler = async ({
   }
 
   switch (game) {
-    case Game.BattleLine:
+    case Game.BATTLE_LINE:
       await setBattleLine(kv, {
         user,
         timeoutAt: dayjs().add(TIMEOUT_S, 'seconds').toDate(),

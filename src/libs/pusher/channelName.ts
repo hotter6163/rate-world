@@ -1,4 +1,4 @@
-import { Game } from '@/games/Game';
+import { Game } from '@prisma/client';
 
 export type Channel =
   | {
