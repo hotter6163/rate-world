@@ -58,6 +58,7 @@ interface MatchingSuccess extends Result {
 builder.objectRef<MatchingSuccess>('CreateMatchingSuccessResult').implement({
   description: 'Result for creating a matching',
   interfaces: [ResultRef],
+  isTypeOf: (parent) => (parent as Result).type === ResultType.SUCCESS,
   fields: (t) => ({
     roomId: t.string({ resolve: (parent) => parent.roomId }),
   }),
@@ -68,6 +69,7 @@ interface MatchingRetry extends Result {}
 builder.objectRef<MatchingRetry>('CreateMatchingRetryResult').implement({
   description: 'Result for creating a matching',
   interfaces: [ResultRef],
+  isTypeOf: (parent) => (parent as Result).type === ResultType.RETRY,
 });
 
 interface MatchingTimeout extends Result {}
@@ -75,6 +77,7 @@ interface MatchingTimeout extends Result {}
 builder.objectRef<MatchingTimeout>('CreateMatchingTimeoutResult').implement({
   description: 'Result for creating a matching',
   interfaces: [ResultRef],
+  isTypeOf: (parent) => (parent as Result).type === ResultType.TIMEOUT,
 });
 
 builder.mutationField('createMatching', (t) =>
