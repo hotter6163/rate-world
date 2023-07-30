@@ -1,5 +1,6 @@
 import { builder } from './builder';
 import { Context, context } from './context';
+import './schema/matching';
 import './schema/pusher';
 import './types/giraffe';
 import { ApolloServer } from '@apollo/server';
