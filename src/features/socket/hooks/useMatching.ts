@@ -4,8 +4,8 @@ import { matchingMatchedHandler } from '../handlers/matching/matched';
 import { usePusher } from './usePusher';
 import { useSubscribe } from './useSubscribe';
 import { useUnsubscribe } from './useUnsubscribe';
-import { graphql } from '@/graphql/generated';
 import { splitChannelName } from '@/libs/pusher';
+import { graphql } from '@/server/generated';
 import { useMutation } from '@apollo/client';
 import { useEffect } from 'react';
 
@@ -14,7 +14,7 @@ const mutation = graphql(`
     createMatching(input: $input) {
       result {
         type
-        ... on MatchingSuccess {
+        ... on CreateMatchingSuccessResult {
           roomId
         }
       }
@@ -46,13 +46,13 @@ export const useMatching = () => {
       });
 
       switch (data?.createMatching.result?.__typename) {
-        case 'MatchingSuccess':
+        case 'CreateMatchingSuccessResult':
           console.log('MatchingSuccess', data.createMatching.result.roomId);
           subscribe(data.createMatching.result.roomId, true);
           break;
-        case 'MatchingRetry':
+        case 'CreateMatchingRetryResult':
           break;
-        case 'MatchingTimeout':
+        case 'CreateMatchingTimeoutResult':
           unsubscribe();
           break;
       }

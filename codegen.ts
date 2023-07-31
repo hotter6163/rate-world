@@ -1,32 +1,19 @@
+import { schema } from '@/server/schema';
 import type { CodegenConfig } from '@graphql-codegen/cli';
+import { printSchema } from 'graphql';
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: './src/graphql/schema/**/*.graphql',
+  schema: printSchema(schema),
   documents: ['src/**/*.tsx', 'src/**/*.ts'],
   ignoreNoDocuments: true,
   generates: {
-    './src/graphql/generated/': {
+    './src/server/generated/': {
       preset: 'client',
       config: {
         dedupeFragments: true,
         avoidOptionals: true,
       },
-    },
-    './src/graphql/generated/resolvers-types.ts': {
-      config: {
-        contextType: '@/graphql/context#Context',
-        mapperTypeSuffix: 'Model',
-        mappers: {
-          MatchingResult: '@/graphql/schema/pusher/mappers#MatchingResult',
-          User: '@prisma/client/index.d#User',
-        },
-        useIndexSignature: true,
-      },
-      plugins: ['typescript', 'typescript-resolvers'],
-    },
-    './src/graphql/generated/schema.graphql': {
-      plugins: ['schema-ast'],
     },
   },
 };
