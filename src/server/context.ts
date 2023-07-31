@@ -1,8 +1,7 @@
-import kv from '@/libs/kv';
 import prisma from '@/libs/prisma';
 import pusher from '@/libs/pusher';
 import { PrismaClient } from '@prisma/client';
-import { VercelKV } from '@vercel/kv';
+import { VercelKV, kv } from '@vercel/kv';
 import { NextRequest } from 'next/server';
 import Pusher from 'pusher';
 
