@@ -2,7 +2,6 @@
 
 import {
   ConnectionState,
-  useCallEvent,
   useConnect,
   useDisconnect,
   useMatching,
@@ -10,8 +9,8 @@ import {
   useSubscribe,
   useUnsubscribe,
 } from '@/features/socket';
-import { Game } from '@/games/Game';
 import { getChannelName } from '@/libs/pusher';
+import { Game } from '@prisma/client';
 import { FC } from 'react';
 
 export const Text: FC = () => {
@@ -20,7 +19,6 @@ export const Text: FC = () => {
   const { disconnect } = useDisconnect();
   const { subscribe } = useSubscribe();
   const { unsubscribe } = useUnsubscribe();
-  const { callEvent } = useCallEvent();
   useMatching();
 
   return (
@@ -34,20 +32,13 @@ export const Text: FC = () => {
           {channel ? (
             <>
               <p>{channel.name}</p>
-              <button
-                onClick={() =>
-                  callEvent('matching', [{ key: 'roomId', value: 'matching room id' }], false)
-                }
-              >
-                Trigger Event
-              </button>
               <button onClick={() => unsubscribe()}>Unsubscribe</button>
             </>
           ) : (
             <button
               onClick={() =>
                 subscribe(
-                  getChannelName({ prefix: 'private', game: Game.BattleLine, id: 'matching' }),
+                  getChannelName({ prefix: 'private', game: Game.BATTLE_LINE, id: 'matching' }),
                 )
               }
             >
