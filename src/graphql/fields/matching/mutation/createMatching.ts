@@ -1,6 +1,6 @@
+import { builder } from '@/graphql/builder';
 import { BattleLineStoreItem } from '@/libs/kv';
 import { getChannelName, splitChannelName } from '@/libs/pusher';
-import { builder } from '@/server/builder';
 import { ArenaStatus, Game } from '@prisma/client';
 import dayjs from 'dayjs';
 
@@ -49,7 +49,7 @@ interface Result {
 const ResultRef = builder.interfaceRef<Result>('CreateMatchingResult').implement({
   description: 'Result for creating a matching',
   fields: (t) => ({
-    type: t.field({ type: ResultTypeRef }),
+    type: t.field({ type: ResultTypeRef, resolve: (parent) => parent.type }),
   }),
 });
 

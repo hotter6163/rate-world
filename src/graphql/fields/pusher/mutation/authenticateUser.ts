@@ -1,4 +1,4 @@
-import { builder } from '@/server/builder';
+import { builder } from '@/graphql/builder';
 
 interface Input {
   socketId: string;

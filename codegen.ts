@@ -1,4 +1,4 @@
-import { schema } from '@/server/schema';
+import { schema } from '@/graphql/schema';
 import type { CodegenConfig } from '@graphql-codegen/cli';
 import { printSchema } from 'graphql';
 
@@ -8,7 +8,7 @@ const config: CodegenConfig = {
   documents: ['src/**/*.tsx', 'src/**/*.ts'],
   ignoreNoDocuments: true,
   generates: {
-    './src/server/generated/': {
+    './src/graphql/generated/': {
       preset: 'client',
       config: {
         dedupeFragments: true,

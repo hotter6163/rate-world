@@ -1,6 +1,6 @@
+import { builder } from '@/graphql/builder';
 import { setBattleLine } from '@/libs/kv';
 import { Channel, splitChannelName } from '@/libs/pusher';
-import { builder } from '@/server/builder';
 import { Game, PrismaClient, User } from '@prisma/client';
 import { VercelKV } from '@vercel/kv';
 import dayjs from 'dayjs';

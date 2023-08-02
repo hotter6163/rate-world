@@ -4,8 +4,8 @@ import { matchingMatchedHandler } from '../handlers/matching/matched';
 import { usePusher } from './usePusher';
 import { useSubscribe } from './useSubscribe';
 import { useUnsubscribe } from './useUnsubscribe';
+import { graphql } from '@/graphql/generated';
 import { splitChannelName } from '@/libs/pusher';
-import { graphql } from '@/server/generated';
 import { useMutation } from '@apollo/client';
 import { useEffect } from 'react';
 
