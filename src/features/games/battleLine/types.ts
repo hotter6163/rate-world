@@ -37,9 +37,9 @@ export type TacticalCard = {
 
 export type Card = UnitCard | TacticalCard;
 
-export type Battlefield = {
+export type Battlefields = {
   myFormation: Card[];
-  yourFormation: Card[];
+  opponentFormation: Card[];
   field: TacticalCard | null;
 };
 

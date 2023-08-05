@@ -1,6 +1,6 @@
 import { shuffle } from '../utils';
 import {
-  Battlefield,
+  Battlefields,
   Card,
   TacticalCard,
   TacticalType,
@@ -15,7 +15,7 @@ type BattleLineStore = {
   tacticalStack: TacticalCard[];
   myHands: Card[];
   opponentHands: Card[];
-  battlefield: Battlefield;
+  battlefields: Battlefields[];
   trash: Card[];
   setup: () => void;
 };
@@ -34,24 +34,27 @@ export const useBattleLineStore = create<BattleLineStore>((set, get) => ({
   tacticalStack: [],
   myHands: [],
   opponentHands: [],
-  battlefield: {
-    myFormation: [],
-    yourFormation: [],
-    field: null,
-  },
+  battlefields: [],
   trash: [],
   setup: () => {
-    const { unitStack, tacticalStack } = get();
-    if (unitStack.length > 0 || tacticalStack.length > 0) return;
+    const store = get();
+    if (store.battlefields.length > 0) return;
 
-    const newUnitStack = shuffle(defaultUnitStack);
-    const newMyHands = newUnitStack.splice(0, 7);
-    const newOpponentHands = newUnitStack.splice(0, 7);
+    const unitStack = shuffle(defaultUnitStack);
+    const tacticalStack = shuffle(defaultTacticalStack);
+    const myHands = unitStack.splice(0, 7);
+    const opponentHands = unitStack.splice(0, 7);
+    const battlefields: Battlefields[] = Array(9).fill({
+      myFormation: [],
+      opponentFormation: [],
+      field: null,
+    });
     set({
-      unitStack: newUnitStack,
-      tacticalStack: shuffle(defaultTacticalStack),
-      myHands: newMyHands,
-      opponentHands: newOpponentHands,
+      unitStack,
+      tacticalStack,
+      myHands,
+      opponentHands,
+      battlefields,
     });
   },
 }));
