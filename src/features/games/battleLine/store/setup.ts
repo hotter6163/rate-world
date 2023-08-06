@@ -35,6 +35,16 @@ export const setupBattleLine = (set: ZustandSet<BattleLineStore>) => () =>
         field: null,
       }));
 
+    // for testing
+    battlefields.forEach((_, index) => {
+      const myNumber = [0, 8].includes(index) ? 3 : Math.floor(Math.random() * 4);
+      const opponentNumber = [0, 8].includes(index) ? 3 : Math.floor(Math.random() * 4);
+      console.log(myNumber, opponentNumber);
+      const myFormation = unitStack.splice(0, myNumber);
+      const opponentFormation = unitStack.splice(0, opponentNumber);
+      console.log(index, myFormation, opponentFormation);
+      battlefields[index].myFormation = [...myFormation];
+      battlefields[index].opponentFormation = [...opponentFormation];
     });
 
     return {
