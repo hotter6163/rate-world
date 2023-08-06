@@ -1,4 +1,4 @@
-import './globals.css';
+import '@/styles/globals.css';
 import { Toast } from '@/components/Toast';
 import { SessionProvider, getServerSession } from '@/features/auth';
 import { PusherProvider } from '@/features/socket';
