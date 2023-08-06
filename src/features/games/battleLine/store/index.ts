@@ -19,5 +19,5 @@ export const useBattleLineStore = create<BattleLineStore>((set, get) => ({
   opponentHands: [],
   battlefields: [],
   trash: [],
-  setup: setupBattleLine(set, get),
+  setup: setupBattleLine(set),
 }));
