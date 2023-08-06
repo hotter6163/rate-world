@@ -27,10 +27,14 @@ export const setupBattleLine = (set: ZustandSet<BattleLineStore>) => () =>
     const tacticalStack = shuffle(defaultTacticalStack);
     const myHands = unitStack.splice(0, 7);
     const opponentHands = unitStack.splice(0, 7);
-    const battlefields: Battlefields[] = Array(9).fill({
-      myFormation: [],
-      opponentFormation: [],
-      field: null,
+    const battlefields: Battlefields[] = Array(9)
+      .fill(null)
+      .map(() => ({
+        myFormation: [],
+        opponentFormation: [],
+        field: null,
+      }));
+
     });
 
     return {
