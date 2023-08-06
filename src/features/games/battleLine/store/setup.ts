@@ -1,24 +1,14 @@
-import { shuffle } from '../utils';
+import { BattleLineStore } from '.';
+import { shuffle } from '../../utils';
 import {
   Battlefields,
-  Card,
   TacticalCard,
   TacticalType,
   UNIT_VALUES,
   UnitCard,
   UnitColor,
-} from './types';
-import { create } from 'zustand';
-
-type BattleLineStore = {
-  unitStack: UnitCard[];
-  tacticalStack: TacticalCard[];
-  myHands: Card[];
-  opponentHands: Card[];
-  battlefields: Battlefields[];
-  trash: Card[];
-  setup: () => void;
-};
+} from '../types';
+import { ZustandGet, ZustandSet } from '@/libs/zustand';
 
 const defaultUnitStack: UnitCard[] = Object.values(UnitColor).flatMap((color) =>
   UNIT_VALUES.map((value) => ({ type: 'UNIT', color, value })),
@@ -29,14 +19,8 @@ const defaultTacticalStack: TacticalCard[] = Object.values(TacticalType).map((ta
   tacticalType,
 }));
 
-export const useBattleLineStore = create<BattleLineStore>((set, get) => ({
-  unitStack: [],
-  tacticalStack: [],
-  myHands: [],
-  opponentHands: [],
-  battlefields: [],
-  trash: [],
-  setup: () => {
+export const setupBattleLine =
+  (set: ZustandSet<BattleLineStore>, get: ZustandGet<BattleLineStore>) => () => {
     const store = get();
     if (store.battlefields.length > 0) return;
 
@@ -56,5 +40,4 @@ export const useBattleLineStore = create<BattleLineStore>((set, get) => ({
       opponentHands,
       battlefields,
     });
-  },
-}));
+  };
