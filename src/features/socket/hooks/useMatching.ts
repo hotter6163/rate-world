@@ -47,7 +47,6 @@ export const useMatching = () => {
 
       switch (data?.createMatching.result?.__typename) {
         case 'CreateMatchingSuccessResult':
-          console.log('MatchingSuccess', data.createMatching.result.roomId);
           subscribe(data.createMatching.result.roomId, true);
           break;
         case 'CreateMatchingRetryResult':
