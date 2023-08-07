@@ -23,7 +23,6 @@ export const setupBattleLine =
         }));
 
       if (test) testSetup(battlefields, unitStack);
-      console.log(battlefields, unitStack.length);
 
       return {
         unitStack,
