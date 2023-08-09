@@ -6,9 +6,9 @@ const createJestConfig = nextJest({
 });
 
 const config: Config = {
-  testEnvironment: 'jest-environment-jsdom',
   preset: 'ts-jest',
-  setupFilesAfterEnv: ['./__tests__/setup.ts'],
+  testEnvironment: 'jest-environment-jsdom',
+  setupFilesAfterEnv: ['./setup-jest.ts'],
 };
 
 export default createJestConfig(config);
