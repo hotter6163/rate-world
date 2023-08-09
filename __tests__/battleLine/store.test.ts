@@ -5,7 +5,6 @@ import { act, renderHook } from '@testing-library/react';
 describe('battleLine/store', () => {
   it('ストアの初期化', () => {
     const { result } = renderHook(() => useBattleLineStore());
-    console.log(unitStack.length);
     act(() => result.current.setup());
     expect(result.current.unitStack.length).toBe(unitStack.length - 14);
     expect(result.current.tacticalStack.length).toBe(10);
