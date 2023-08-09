@@ -13,6 +13,7 @@ export type UnitValue = (typeof UNIT_VALUES)[number];
 
 export type UnitCard = {
   type: 'UNIT';
+  id: string;
   color: UnitColor;
   value: UnitValue;
 };
@@ -32,6 +33,7 @@ export enum TacticalType {
 
 export type TacticalCard = {
   type: 'TACTICAL';
+  id: string;
   tacticalType: TacticalType;
 };
 

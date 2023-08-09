@@ -1,55 +1,45 @@
 import { BattleLineStore } from '.';
 import { shuffle } from '../../utils';
-import {
-  Battlefields,
-  TacticalCard,
-  TacticalType,
-  UNIT_VALUES,
-  UnitCard,
-  UnitColor,
-} from '../types';
+import { tacticalStack as defaultTacticalStack, unitStack as defaultUnitStack } from '../constants';
+import { Battlefields, UnitCard } from '../types';
 import { ZustandSet } from '@/libs/zustand';
 
-const defaultUnitStack: UnitCard[] = Object.values(UnitColor).flatMap((color) =>
-  UNIT_VALUES.map((value) => ({ type: 'UNIT', color, value })),
-);
+export const setupBattleLine =
+  (set: ZustandSet<BattleLineStore>): BattleLineStore['setup'] =>
+  (test) =>
+    set((state) => {
+      if (state.battlefields.length > 0) return {};
 
-const defaultTacticalStack: TacticalCard[] = Object.values(TacticalType).map((tacticalType) => ({
-  type: 'TACTICAL',
-  tacticalType,
-}));
+      const unitStack = shuffle([...defaultUnitStack]);
+      const tacticalStack = shuffle([...defaultTacticalStack]);
+      const myHands = unitStack.splice(0, 7);
+      const opponentHands = unitStack.splice(0, 7);
+      const battlefields: Battlefields[] = Array(9)
+        .fill(null)
+        .map(() => ({
+          myFormation: [],
+          opponentFormation: [],
+          field: null,
+        }));
 
-export const setupBattleLine = (set: ZustandSet<BattleLineStore>) => () =>
-  set((state) => {
-    if (state.battlefields.length > 0) return {};
+      if (test) testSetup(battlefields, unitStack);
 
-    const unitStack = shuffle(defaultUnitStack);
-    const tacticalStack = shuffle(defaultTacticalStack);
-    const myHands = unitStack.splice(0, 7);
-    const opponentHands = unitStack.splice(0, 7);
-    const battlefields: Battlefields[] = Array(9)
-      .fill(null)
-      .map(() => ({
-        myFormation: [],
-        opponentFormation: [],
-        field: null,
-      }));
-
-    // for testing
-    battlefields.forEach((_, index) => {
-      const myNumber = index === 0 ? 3 : index === 8 ? 4 : Math.floor(Math.random() * 4);
-      const opponentNumber = index === 0 ? 3 : index === 8 ? 4 : Math.floor(Math.random() * 4);
-      const myFormation = unitStack.splice(0, myNumber);
-      const opponentFormation = unitStack.splice(0, opponentNumber);
-      battlefields[index].myFormation = [...myFormation];
-      battlefields[index].opponentFormation = [...opponentFormation];
+      return {
+        unitStack,
+        tacticalStack,
+        myHands,
+        opponentHands,
+        battlefields,
+      };
     });
 
-    return {
-      unitStack,
-      tacticalStack,
-      myHands,
-      opponentHands,
-      battlefields,
-    };
+const testSetup = (battlefields: Battlefields[], unitStack: UnitCard[]) => {
+  battlefields.forEach((_, index) => {
+    const myNumber = index === 0 ? 3 : index === 8 ? 4 : Math.floor(Math.random() * 4);
+    const opponentNumber = index === 0 ? 3 : index === 8 ? 4 : Math.floor(Math.random() * 4);
+    const myFormation = unitStack.splice(0, myNumber);
+    const opponentFormation = unitStack.splice(0, opponentNumber);
+    battlefields[index].myFormation = [...myFormation];
+    battlefields[index].opponentFormation = [...opponentFormation];
   });
+};

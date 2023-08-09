@@ -9,7 +9,7 @@ export const BattleLineArena: FC = () => {
   const setup = useBattleLineStore((state) => state.setup);
 
   useEffect(() => {
-    setup();
+    setup(process.env.NODE_ENV === 'development');
   }, [setup]);
 
   return (
