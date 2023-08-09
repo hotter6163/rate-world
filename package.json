@@ -72,6 +72,7 @@
     "prisma": "^4.16.2",
     "prisma-erd-generator": "^1.6.2",
     "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0"
   }
 }
