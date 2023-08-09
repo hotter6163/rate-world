@@ -27,4 +27,22 @@ describe('battleLine/store', () => {
       expect(result.current.opponentHands.length).toBe(7);
     });
   });
+
+  describe('基本操作', () => {
+    beforeEach(() => {
+      const result = storeHookResult.result;
+      act(() => result.current.setup());
+    });
+
+    it('自分の手札を選択', () => {
+      expect(result.current.selectedIndex).toBeNull();
+      act(() => result.current.selectHand(0));
+      expect(result.current.selectedIndex).toBe(0);
+      act(() => result.current.selectHand(6));
+      expect(result.current.selectedIndex).toBe(6);
+      const test = (index: number) => () => act(() => result.current.selectHand(index));
+      expect(test(-1)).toThrowError('index out of range');
+      expect(test(7)).toThrowError('index out of range');
+    });
+  });
 });

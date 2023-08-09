@@ -1,4 +1,5 @@
 import { Battlefields, Card, TacticalCard, UnitCard } from '../types';
+import { selectHand } from './selectHand';
 import { setupBattleLine } from './setup';
 import { create } from 'zustand';
 
@@ -12,7 +13,9 @@ export type BattleLineStore = {
     mine: Card[];
     opponent: Card[];
   };
+  selectedIndex: number | null;
   setup: (test?: boolean) => void;
+  selectHand: (index: number) => void;
 };
 
 export const useBattleLineStore = create<BattleLineStore>((set) => ({
@@ -25,5 +28,7 @@ export const useBattleLineStore = create<BattleLineStore>((set) => ({
     mine: [],
     opponent: [],
   },
+  selectedIndex: null,
   setup: setupBattleLine(set),
+  selectHand: selectHand(set),
 }));
