@@ -1,3 +1,4 @@
+// __mocks__/zustand.ts
 import { act } from '@testing-library/react';
 import * as zustand from 'zustand';
 
@@ -7,15 +8,14 @@ const { create: actualCreate } = jest.requireActual<typeof zustand>('zustand');
 export const storeResetFns = new Set<() => void>();
 
 // when creating a store, we get its initial state, create a reset function and add it in the set
-export const create = (<T extends unknown>() =>
-  (stateCreator: zustand.StateCreator<T>) => {
-    const store = actualCreate(stateCreator);
-    const initialState = store.getState();
-    storeResetFns.add(() => {
-      store.setState(initialState, true);
-    });
-    return store;
-  }) as typeof zustand.create;
+export const create = (<T extends unknown>(stateCreator: zustand.StateCreator<T>) => {
+  const store = actualCreate(stateCreator);
+  const initialState = store.getState();
+  storeResetFns.add(() => {
+    store.setState(initialState, true);
+  });
+  return store;
+}) as typeof zustand.create;
 
 // reset all stores after each test run
 afterEach(() => {
