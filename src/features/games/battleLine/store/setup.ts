@@ -10,8 +10,8 @@ export const setupBattleLine =
     set((state) => {
       if (state.battlefields.length > 0) return {};
 
-      const unitStack = shuffle(defaultUnitStack);
-      const tacticalStack = shuffle(defaultTacticalStack);
+      const unitStack = shuffle([...defaultUnitStack]);
+      const tacticalStack = shuffle([...defaultTacticalStack]);
       const myHands = unitStack.splice(0, 7);
       const opponentHands = unitStack.splice(0, 7);
       const battlefields: Battlefields[] = Array(9)

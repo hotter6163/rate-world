@@ -20,13 +20,7 @@ export const useBattleLineStore = create<BattleLineStore>((set) => ({
   tacticalStack: [],
   myHands: [],
   opponentHands: [],
-  battlefields: Array(9)
-    .fill(null)
-    .map(() => ({
-      myFormation: [],
-      opponentFormation: [],
-      field: null,
-    })),
+  battlefields: [],
   trash: {
     mine: [],
     opponent: [],
