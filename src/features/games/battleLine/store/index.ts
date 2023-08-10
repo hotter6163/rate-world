@@ -16,6 +16,8 @@ export type BattleLineStore = {
   selectedIndex: number | null;
   setup: (test?: boolean) => void;
   selectHand: (index: number) => void;
+  playCard: (index?: number) => void;
+  drawCard: (cardType: Card['type']) => void;
 };
 
 export const useBattleLineStore = create<BattleLineStore>((set) => ({
