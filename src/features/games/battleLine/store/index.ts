@@ -1,4 +1,5 @@
 import { Battlefields, Card, TacticalCard, UnitCard } from '../types';
+import { drawCard } from './drawCard';
 import { playCard } from './playCard';
 import { selectHand } from './selectHand';
 import { setupBattleLine } from './setup';
@@ -35,4 +36,5 @@ export const useBattleLineStore = create<BattleLineStore>((set) => ({
   setup: setupBattleLine(set),
   selectHand: selectHand(set),
   playCard: playCard(set),
+  drawCard: drawCard(set),
 }));
