@@ -19,7 +19,7 @@ export const setupBattleLine =
         .map(() => ({
           myFormation: [],
           opponentFormation: [],
-          field: null,
+          field: [],
         }));
 
       if (test) testSetup(battlefields, unitStack);

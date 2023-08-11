@@ -42,7 +42,7 @@ export type Card = UnitCard | TacticalCard;
 export type Battlefields = {
   myFormation: Card[];
   opponentFormation: Card[];
-  field: TacticalCard | null;
+  field: TacticalCard[];
 };
 
 export type Player = 'myself' | 'opponent';
