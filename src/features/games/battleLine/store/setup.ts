@@ -6,9 +6,9 @@ import { ZustandSet } from '@/libs/zustand';
 
 export const setupBattleLine =
   (set: ZustandSet<BattleLineStore>): BattleLineStore['setup'] =>
-  (test) =>
+  (player, test) =>
     set((state) => {
-      if (state.battlefields.length > 0) return {};
+      if (state.turn.type !== 'init') throw new Error('Invalid turn type');
 
       const unitStack = shuffle([...defaultUnitStack]);
       const tacticalStack = shuffle([...defaultTacticalStack]);
@@ -30,6 +30,7 @@ export const setupBattleLine =
         myHands,
         opponentHands,
         battlefields,
+        turn: { type: 'playCard', player },
       };
     });
 

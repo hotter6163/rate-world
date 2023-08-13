@@ -10,6 +10,8 @@ export const playCard =
     return set((state) => {
       if (state.selectedIndex === null) throw new Error('no card selected');
       if (state.battlefields[index].myFormation.length >= 3) throw new Error('field is full');
+      if (state.turn.type !== 'playCard' || state.turn.player !== 'myself')
+        throw new Error('turn is not playCard');
 
       switch (state.myHands[state.selectedIndex].id) {
         case TacticalType.FOG:
@@ -21,7 +23,7 @@ export const playCard =
     });
   };
 
-const processWeatherCard = (state: BattleLineStore, index: number) => {
+const processWeatherCard = (state: BattleLineStore, index: number): Partial<BattleLineStore> => {
   const card = { ...state.myHands[state.selectedIndex!] } as TacticalCard;
   const newBattlefields = state.battlefields.map((b, i) =>
     i === index ? { ...b, field: [...b.field, card] } : { ...b },
@@ -31,10 +33,11 @@ const processWeatherCard = (state: BattleLineStore, index: number) => {
     battlefields: newBattlefields,
     myHands: newHands,
     selectedIndex: null,
+    turn: { type: 'drawCard', player: 'myself' },
   };
 };
 
-const processDefault = (state: BattleLineStore, index: number) => {
+const processDefault = (state: BattleLineStore, index: number): Partial<BattleLineStore> => {
   const card = { ...state.myHands[state.selectedIndex!] };
   const newBattlefields = state.battlefields.map((b, i) =>
     i === index ? { ...b, myFormation: [...b.myFormation, card] } : { ...b },
@@ -44,6 +47,7 @@ const processDefault = (state: BattleLineStore, index: number) => {
     battlefields: newBattlefields,
     myHands: newHands,
     selectedIndex: null,
+    turn: { type: 'drawCard', player: 'myself' },
   };
 };
 

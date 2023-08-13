@@ -13,6 +13,7 @@ export const drawCard =
           return {
             myHands: [...state.myHands, unitCard],
             unitStack: newUnitStack,
+            turn: { type: 'decision', player: 'myself' },
           };
         case 'TACTICAL':
           if (state.tacticalStack.length === 0) throw new Error('tacticalStack is empty');
@@ -20,6 +21,7 @@ export const drawCard =
           return {
             myHands: [...state.myHands, tacticalCard],
             tacticalStack: newTacticalStack,
+            turn: { type: 'decision', player: 'myself' },
           };
       }
     });
