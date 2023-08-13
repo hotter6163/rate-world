@@ -1,6 +1,6 @@
 import { tacticalStack, unitStack } from '@/features/games/battleLine/constants';
 import { BattleLineStore, useBattleLineStore } from '@/features/games/battleLine/store';
-import { TacticalType } from '@/features/games/battleLine/types';
+import { TacticalCard, TacticalType } from '@/features/games/battleLine/types';
 import { act, renderHook } from '@testing-library/react';
 
 describe('battleLine/store', () => {
@@ -10,7 +10,7 @@ describe('battleLine/store', () => {
     result = renderHook(() => useBattleLineStore()).result;
   });
 
-  const selectAndPlayCard = (handIndex: number, battlefieldIndex: number) => {
+  const selectAndPlayCard = (handIndex: number, battlefieldIndex?: number) => {
     act(() => result.current.selectHand(handIndex));
     act(() => result.current.playCard(battlefieldIndex));
   };
@@ -66,6 +66,10 @@ describe('battleLine/store', () => {
           act(() => result.current.selectHand(0));
           expect(() => act(() => result.current.playCard(0))).toThrowError();
           expect(result.current.myHands.length).toBe(7);
+        });
+
+        it('フィールドを選択していないとエラー', () => {
+          expect(() => selectAndPlayCard(0)).toThrowError();
         });
       });
 
@@ -131,6 +135,71 @@ describe('battleLine/store', () => {
             selectAndPlayCard(0, i);
             expect(result.current.battlefields[i].field).toContainEqual(card);
             expect(result.current.myHands).not.toContainEqual(card);
+          });
+        });
+      });
+
+      describe('謀略戦術カード', () => {
+        const playAndVerifyConspiracyCard = (tacticalCard: TacticalCard) => {
+          selectAndPlayCard(0);
+          expect(result.current.myTrash).toContainEqual(tacticalCard);
+          expect(result.current.myHands).not.toContainEqual(tacticalCard);
+          expect(result.current.turn).toEqual({
+            type: 'processing',
+            player: 'myself',
+            tacticalType: tacticalCard.tacticalType,
+          });
+        };
+
+        describe('偵察', () => {
+          const ScoutCard = {
+            type: 'TACTICAL',
+            id: TacticalType.SCOUT,
+            tacticalType: TacticalType.SCOUT,
+          } as const;
+
+          it('カードをプレイ', () => {
+            result.current.myHands = [ScoutCard, ...result.current.myHands.slice(1, 7)];
+            playAndVerifyConspiracyCard(ScoutCard);
+          });
+        });
+
+        describe('配置転換', () => {
+          const RedeployCard = {
+            type: 'TACTICAL',
+            id: TacticalType.REDEPLOY,
+            tacticalType: TacticalType.REDEPLOY,
+          } as const;
+
+          it('カードを場に出す', () => {
+            result.current.myHands = [RedeployCard, ...result.current.myHands.slice(1, 7)];
+            playAndVerifyConspiracyCard(RedeployCard);
+          });
+        });
+
+        describe('脱走', () => {
+          const DeserterCard = {
+            type: 'TACTICAL',
+            id: TacticalType.DESERTER,
+            tacticalType: TacticalType.DESERTER,
+          } as const;
+
+          it('カードを場に出す', () => {
+            result.current.myHands = [DeserterCard, ...result.current.myHands.slice(1, 7)];
+            playAndVerifyConspiracyCard(DeserterCard);
+          });
+        });
+
+        describe('裏切り', () => {
+          const TraitorCard = {
+            type: 'TACTICAL',
+            id: TacticalType.TRAITOR,
+            tacticalType: TacticalType.TRAITOR,
+          } as const;
+
+          it('カードを場に出す', () => {
+            result.current.myHands = [TraitorCard, ...result.current.myHands.slice(1, 7)];
+            playAndVerifyConspiracyCard(TraitorCard);
           });
         });
       });
