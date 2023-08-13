@@ -1,4 +1,4 @@
-import { Battlefields, Card, TacticalCard, UnitCard } from '../types';
+import { Battlefields, Card, Player, TacticalCard, Turn, UnitCard } from '../types';
 import { drawCard } from './drawCard';
 import { playCard } from './playCard';
 import { selectHand } from './selectHand';
@@ -16,7 +16,8 @@ export type BattleLineStore = {
     opponent: Card[];
   };
   selectedIndex: number | null;
-  setup: (test?: boolean) => void;
+  turn: Turn;
+  setup: (player: Player, test?: boolean) => void;
   selectHand: (index: number) => void;
   playCard: (index?: number) => void;
   drawCard: (cardType: Card['type']) => void;
@@ -33,6 +34,7 @@ export const useBattleLineStore = create<BattleLineStore>((set) => ({
     opponent: [],
   },
   selectedIndex: null,
+  turn: { type: 'init' },
   setup: setupBattleLine(set),
   selectHand: selectHand(set),
   playCard: playCard(set),

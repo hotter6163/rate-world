@@ -46,3 +46,17 @@ export type Battlefields = {
 };
 
 export type Player = 'myself' | 'opponent';
+
+export type Turn =
+  | {
+      type: 'init';
+    }
+  | {
+      type: 'playCard' | 'drawCard' | 'decision';
+      player: Player;
+    }
+  | {
+      type: 'processing';
+      player: Player;
+      card: TacticalCard;
+    };
