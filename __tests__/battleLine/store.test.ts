@@ -8,7 +8,6 @@ describe('battleLine/store', () => {
 
   beforeEach(() => {
     result = renderHook(() => useBattleLineStore()).result;
-    act(() => result.current.setup());
   });
 
   const selectAndPlayCard = (handIndex: number, battlefieldIndex: number) => {
@@ -18,15 +17,25 @@ describe('battleLine/store', () => {
 
   describe('setup', () => {
     it('ストアの初期化', () => {
-      act(() => result.current.setup());
+      act(() => result.current.setup('opponent'));
       expect(result.current.unitStack.length).toBe(unitStack.length - 14);
       expect(result.current.tacticalStack.length).toBe(tacticalStack.length);
       expect(result.current.myHands.length).toBe(7);
       expect(result.current.opponentHands.length).toBe(7);
+      expect(result.current.turn).toEqual({ type: 'playCard', player: 'opponent' });
+    });
+
+    it('turn = initじゃないとエラー', () => {
+      act(() => result.current.setup('myself'));
+      expect(() => act(() => result.current.setup('myself'))).toThrowError();
     });
   });
 
   describe('基本操作', () => {
+    beforeEach(() => {
+      act(() => result.current.setup('myself'));
+    });
+
     describe('自分の手札を選択', () => {
       it('通常の操作', () => {
         act(() => result.current.selectHand(0));
@@ -49,6 +58,7 @@ describe('battleLine/store', () => {
           expect(result.current.battlefields[0].myFormation[0]).toEqual(card);
           expect(result.current.myHands.length).toBe(6);
           expect(result.current.myHands).not.toContainEqual(card);
+          expect(result.current.turn).toEqual({ type: 'drawCard', player: 'myself' });
         });
 
         it('フィールドが埋まっているとエラー', () => {
@@ -89,6 +99,7 @@ describe('battleLine/store', () => {
 
         it('カードを場に出す', () => {
           tacticalCards.forEach((card, i) => {
+            result.current.turn = { type: 'playCard', player: 'myself' };
             selectAndPlayCard(0, i);
             expect(result.current.battlefields[i].myFormation).toContainEqual(card);
             expect(result.current.myHands).not.toContainEqual(card);
@@ -116,6 +127,7 @@ describe('battleLine/store', () => {
 
         it('カードを場に出す', () => {
           tacticalCards.forEach((card, i) => {
+            result.current.turn = { type: 'playCard', player: 'myself' };
             selectAndPlayCard(0, i);
             expect(result.current.battlefields[i].field).toContainEqual(card);
             expect(result.current.myHands).not.toContainEqual(card);
@@ -133,6 +145,12 @@ describe('battleLine/store', () => {
           expect(() => selectAndPlayCard(0, i)).toThrowError();
         });
       });
+
+      it('自分のターンじゃないとカードを場に出せない', () => {
+        result.current.turn = { type: 'playCard', player: 'opponent' };
+        console.log(result.current.turn);
+        expect(() => selectAndPlayCard(0, 0)).toThrowError();
+      });
     });
 
     describe('手札を補充する', () => {
@@ -144,6 +162,7 @@ describe('battleLine/store', () => {
         expect(result.current.myHands.length).toBe(7);
         expect(result.current.myHands).toContainEqual(card);
         expect(result.current.unitStack.length).toBe(stackNumber - 1);
+        expect(result.current.turn).toEqual({ type: 'decision', player: 'myself' });
       });
 
       it('タクティカルカードを補充する', () => {
@@ -154,6 +173,7 @@ describe('battleLine/store', () => {
         expect(result.current.myHands.length).toBe(7);
         expect(result.current.myHands).toContainEqual(card);
         expect(result.current.tacticalStack.length).toBe(stackNumber - 1);
+        expect(result.current.turn).toEqual({ type: 'decision', player: 'myself' });
       });
 
       it('カードを出してない時はエラー', () => {
@@ -164,6 +184,7 @@ describe('battleLine/store', () => {
         result.current.unitStack = [];
         result.current.tacticalStack = [];
         (['UNIT', 'TACTICAL'] as const).forEach((type) => {
+          result.current.turn = { type: 'playCard', player: 'myself' };
           selectAndPlayCard(0, 0);
           expect(() => act(() => result.current.drawCard(type))).toThrowError();
         });
