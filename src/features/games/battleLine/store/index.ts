@@ -11,10 +11,8 @@ export type BattleLineStore = {
   myHands: Card[];
   opponentHands: Card[];
   battlefields: Battlefields[];
-  trash: {
-    mine: Card[];
-    opponent: Card[];
-  };
+  myTrash: Card[];
+  opponentTrash: Card[];
   selectedIndex: number | null;
   turn: Turn;
   setup: (player: Player, test?: boolean) => void;
@@ -29,10 +27,8 @@ export const useBattleLineStore = create<BattleLineStore>((set) => ({
   myHands: [],
   opponentHands: [],
   battlefields: [],
-  trash: {
-    mine: [],
-    opponent: [],
-  },
+  myTrash: [],
+  opponentTrash: [],
   selectedIndex: null,
   turn: { type: 'init' },
   setup: setupBattleLine(set),

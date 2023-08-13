@@ -47,6 +47,13 @@ export type Battlefields = {
 
 export type Player = 'myself' | 'opponent';
 
+export const CONSPIRACY_CARD_TYPES = [
+  TacticalType.SCOUT,
+  TacticalType.REDEPLOY,
+  TacticalType.DESERTER,
+  TacticalType.TRAITOR,
+] as const;
+
 export type Turn =
   | {
       type: 'init';
@@ -58,5 +65,5 @@ export type Turn =
   | {
       type: 'processing';
       player: Player;
-      card: TacticalCard;
+      tacticalType: (typeof CONSPIRACY_CARD_TYPES)[number];
     };
