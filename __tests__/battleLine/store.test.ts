@@ -140,8 +140,7 @@ describe('battleLine/store', () => {
       });
 
       describe('謀略戦術カード', () => {
-        const playAndVerifyConspiracyCard = (tacticalCard: TacticalCard) => {
-          selectAndPlayCard(0);
+        const verifyConspiracyCard = (tacticalCard: TacticalCard) => {
           expect(result.current.myTrash).toContainEqual(tacticalCard);
           expect(result.current.myHands).not.toContainEqual(tacticalCard);
           expect(result.current.turn).toEqual({
@@ -158,9 +157,13 @@ describe('battleLine/store', () => {
             tacticalType: TacticalType.SCOUT,
           } as const;
 
-          it('カードをプレイ', () => {
+          beforeEach(() => {
             result.current.myHands = [ScoutCard, ...result.current.myHands.slice(1, 7)];
-            playAndVerifyConspiracyCard(ScoutCard);
+            selectAndPlayCard(0);
+          });
+
+          it('カードをプレイ', () => {
+            verifyConspiracyCard(ScoutCard);
           });
         });
 
@@ -171,9 +174,13 @@ describe('battleLine/store', () => {
             tacticalType: TacticalType.REDEPLOY,
           } as const;
 
-          it('カードを場に出す', () => {
+          beforeEach(() => {
             result.current.myHands = [RedeployCard, ...result.current.myHands.slice(1, 7)];
-            playAndVerifyConspiracyCard(RedeployCard);
+            selectAndPlayCard(0);
+          });
+
+          it('カードをプレイ', () => {
+            verifyConspiracyCard(RedeployCard);
           });
         });
 
@@ -184,9 +191,13 @@ describe('battleLine/store', () => {
             tacticalType: TacticalType.DESERTER,
           } as const;
 
-          it('カードを場に出す', () => {
+          beforeEach(() => {
             result.current.myHands = [DeserterCard, ...result.current.myHands.slice(1, 7)];
-            playAndVerifyConspiracyCard(DeserterCard);
+            selectAndPlayCard(0);
+          });
+
+          it('カードをプレイ', () => {
+            verifyConspiracyCard(DeserterCard);
           });
         });
 
@@ -197,9 +208,13 @@ describe('battleLine/store', () => {
             tacticalType: TacticalType.TRAITOR,
           } as const;
 
-          it('カードを場に出す', () => {
+          beforeEach(() => {
             result.current.myHands = [TraitorCard, ...result.current.myHands.slice(1, 7)];
-            playAndVerifyConspiracyCard(TraitorCard);
+            selectAndPlayCard(0);
+          });
+
+          it('カードをプレイ', () => {
+            verifyConspiracyCard(TraitorCard);
           });
         });
       });
@@ -217,7 +232,6 @@ describe('battleLine/store', () => {
 
       it('自分のターンじゃないとカードを場に出せない', () => {
         result.current.turn = { type: 'playCard', player: 'opponent' };
-        console.log(result.current.turn);
         expect(() => selectAndPlayCard(0, 0)).toThrowError();
       });
     });
