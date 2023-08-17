@@ -2,13 +2,14 @@ import { BattleLineStore } from '.';
 import { shuffle } from '../../utils';
 import { tacticalStack as defaultTacticalStack, unitStack as defaultUnitStack } from '../constants';
 import { Battlefield, UnitCard } from '../types';
+import { isExpectedTurn } from './utils/isExpectedTurn';
 import { ZustandSet } from '@/libs/zustand';
 
 export const setupBattleLine =
   (set: ZustandSet<BattleLineStore>): BattleLineStore['setup'] =>
   (player, test) =>
     set((state) => {
-      if (state.turn.type !== 'init') throw new Error('Invalid turn type');
+      if (!isExpectedTurn(state.turn, { type: 'init' })) throw new Error('Invalid turn type');
 
       const unitStack = shuffle([...defaultUnitStack]);
       const tacticalStack = shuffle([...defaultTacticalStack]);

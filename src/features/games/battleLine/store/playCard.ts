@@ -1,5 +1,6 @@
 import { BattleLineStore } from '.';
 import { CONSPIRACY_CARD_TYPES, Card, TacticalCard, TacticalType } from '../types';
+import { isExpectedTurn } from './utils/isExpectedTurn';
 import { ZustandSet } from '@/libs/zustand';
 
 export const playCard =
@@ -7,7 +8,7 @@ export const playCard =
   (index) => {
     return set((state) => {
       if (state.selectedIndex === null) throw new Error('no card selected');
-      if (state.turn.type !== 'playCard' || state.turn.player !== 'myself')
+      if (!isExpectedTurn(state.turn, { type: 'playCard', player: 'myself' }))
         throw new Error('turn is not playCard');
 
       const selectedCard = state.myHands[state.selectedIndex];
