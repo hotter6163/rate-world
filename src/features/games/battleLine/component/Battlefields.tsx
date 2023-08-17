@@ -4,7 +4,7 @@ import { useBattleLineStore } from '../store';
 import { Battlefield } from './Battlefield';
 import { FC } from 'react';
 
-export const Battlefields: FC = () => {
+export const Battlefield: FC = () => {
   const battlefields = useBattleLineStore((store) => store.battlefields);
 
   return (

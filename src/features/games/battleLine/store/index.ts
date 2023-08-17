@@ -1,4 +1,4 @@
-import { Battlefields, Card, Player, TacticalCard, Turn, UnitCard } from '../types';
+import { Battlefield, Card, Player, TacticalCard, Turn, UnitCard } from '../types';
 import { drawCard } from './drawCard';
 import { playCard } from './playCard';
 import { selectHand } from './selectHand';
@@ -10,7 +10,7 @@ export type BattleLineStore = {
   tacticalStack: TacticalCard[];
   myHands: Card[];
   opponentHands: Card[];
-  battlefields: Battlefields[];
+  battlefields: Battlefield[];
   myTrash: Card[];
   opponentTrash: Card[];
   selectedIndex: number | null;

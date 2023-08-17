@@ -1,12 +1,12 @@
 'use client';
 
-import { Battlefields, Player } from '../types';
+import { Battlefield, Player } from '../types';
 import { Formation } from './Formation';
 import clsx from 'clsx';
 import { FC } from 'react';
 
 interface Props {
-  battlefield: Battlefields;
+  battlefield: Battlefield;
 }
 
 export const Battlefield: FC<Props> = ({ battlefield }) => {

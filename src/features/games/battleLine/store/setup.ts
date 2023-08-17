@@ -1,7 +1,7 @@
 import { BattleLineStore } from '.';
 import { shuffle } from '../../utils';
 import { tacticalStack as defaultTacticalStack, unitStack as defaultUnitStack } from '../constants';
-import { Battlefields, UnitCard } from '../types';
+import { Battlefield, UnitCard } from '../types';
 import { ZustandSet } from '@/libs/zustand';
 
 export const setupBattleLine =
@@ -14,7 +14,7 @@ export const setupBattleLine =
       const tacticalStack = shuffle([...defaultTacticalStack]);
       const myHands = unitStack.splice(0, 7);
       const opponentHands = unitStack.splice(0, 7);
-      const battlefields: Battlefields[] = Array(9)
+      const battlefields: Battlefield[] = Array(9)
         .fill(null)
         .map(() => ({
           myFormation: [],
@@ -34,7 +34,7 @@ export const setupBattleLine =
       };
     });
 
-const testSetup = (battlefields: Battlefields[], unitStack: UnitCard[]) => {
+const testSetup = (battlefields: Battlefield[], unitStack: UnitCard[]) => {
   battlefields.forEach((_, index) => {
     const myNumber = index === 0 ? 3 : index === 8 ? 4 : Math.floor(Math.random() * 4);
     const opponentNumber = index === 0 ? 3 : index === 8 ? 4 : Math.floor(Math.random() * 4);

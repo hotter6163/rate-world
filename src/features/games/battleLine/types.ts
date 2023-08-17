@@ -39,7 +39,7 @@ export type TacticalCard = {
 
 export type Card = UnitCard | TacticalCard;
 
-export type Battlefields = {
+export type Battlefield = {
   myFormation: Card[];
   opponentFormation: Card[];
   field: TacticalCard[];
