@@ -1,6 +1,7 @@
 import { tacticalStack, unitStack } from '@/features/games/battleLine/constants';
 import { BattleLineStore, useBattleLineStore } from '@/features/games/battleLine/store';
-import { TacticalCard, TacticalType } from '@/features/games/battleLine/types';
+import { splitCards } from '@/features/games/battleLine/store/utils/splitCards';
+import { Card, TacticalCard, TacticalType } from '@/features/games/battleLine/types';
 import { act, renderHook } from '@testing-library/react';
 
 describe('battleLine/store', () => {
@@ -156,14 +157,68 @@ describe('battleLine/store', () => {
             id: TacticalType.SCOUT,
             tacticalType: TacticalType.SCOUT,
           } as const;
+          let selectedCards: Card[];
+          let removedCards: Card[];
 
           beforeEach(() => {
             result.current.myHands = [ScoutCard, ...result.current.myHands.slice(1, 7)];
             selectAndPlayCard(0);
+
+            const selectedUnitCards = result.current.unitStack.slice(0, 2);
+            const selectedTacticalCards = result.current.tacticalStack.slice(0, 2);
+            selectedCards = [...selectedUnitCards, ...selectedTacticalCards];
+            removedCards = [
+              ...result.current.myHands.slice(0, 1),
+              ...selectedTacticalCards.slice(0, 1),
+              ...result.current.myHands.slice(1),
+            ];
           });
+
+          const actProcessScout = (selectedNum: number, removedNum: number) => {
+            act(() =>
+              result.current.processScout(
+                selectedCards.slice(0, selectedNum),
+                removedCards.slice(0, removedNum),
+              ),
+            );
+          };
 
           it('カードをプレイ', () => {
             verifyConspiracyCard(ScoutCard);
+
+            actProcessScout(3, 2);
+            expect(result.current.myHands.length).toBe(7);
+            selectedCards.slice(0, 3).forEach((card) => {
+              if (removedCards.map((c) => c.id).includes(card.id)) return;
+
+              expect(result.current.myHands).toContainEqual(card);
+              if (card.type === 'UNIT') {
+                expect(result.current.unitStack).not.toContainEqual(card);
+              } else {
+                expect(result.current.tacticalStack).not.toContainEqual(card);
+              }
+            });
+            removedCards.slice(0, 2).forEach((card, _, removedCards) => {
+              const { unitCards, tacticalCards } = splitCards(removedCards);
+              if (card.type === 'UNIT') {
+                const index = unitCards.findIndex((c) => c.id === card.id);
+                expect(result.current.unitStack[index]).toEqual(card);
+              } else {
+                const index = tacticalCards.findIndex((c) => c.id === card.id);
+                expect(result.current.tacticalStack[index]).toEqual(card);
+              }
+            });
+            expect(result.current.turn).toEqual({ type: 'decision', player: 'myself' });
+          });
+
+          it('selectedCardsが3枚じゃないとエラー', () => {
+            expect(() => actProcessScout(2, 2)).toThrowError();
+            expect(() => actProcessScout(4, 2)).toThrowError();
+          });
+
+          it('removedCardsが2枚じゃないとエラー', () => {
+            expect(() => actProcessScout(3, 1)).toThrowError();
+            expect(() => actProcessScout(3, 3)).toThrowError();
           });
         });
 
