@@ -1,6 +1,7 @@
 import { Battlefield, Card, Player, TacticalCard, Turn, UnitCard } from '../types';
 import { drawCard } from './drawCard';
 import { playCard } from './playCard';
+import { processScout } from './processScout';
 import { selectHand } from './selectHand';
 import { setupBattleLine } from './setup';
 import { create } from 'zustand';
@@ -19,6 +20,7 @@ export type BattleLineStore = {
   selectHand: (index: number) => void;
   playCard: (index?: number) => void;
   drawCard: (cardType: Card['type']) => void;
+  processScout: (selectedCards: Card[], removedCards: Card[]) => void;
 };
 
 export const useBattleLineStore = create<BattleLineStore>((set) => ({
@@ -35,4 +37,5 @@ export const useBattleLineStore = create<BattleLineStore>((set) => ({
   selectHand: selectHand(set),
   playCard: playCard(set),
   drawCard: drawCard(set),
+  processScout: processScout(set),
 }));
