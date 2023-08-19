@@ -110,6 +110,9 @@ describe('battleLine/store', () => {
             expect(result.current.myHands).not.toContainEqual(card);
           });
         });
+
+        // TODO: このテストはまだ実装していない
+        it('ALEXANDERとDARIUSを1人のプレイヤーが使うことはできない', () => {});
       });
 
       describe('気象戦術カード', () => {
@@ -138,6 +141,12 @@ describe('battleLine/store', () => {
             expect(result.current.myHands).not.toContainEqual(card);
           });
         });
+
+        // TODO: このテストはまだ実装していない
+        it('霧があるbattlefieldでは数値の合計値で勝負する', () => {});
+
+        // TODO: このテストはまだ実装していない
+        it('MUDがあるbattlefieldには4枚めのカードを出せる', () => {});
       });
 
       describe('謀略戦術カード', () => {
@@ -289,6 +298,9 @@ describe('battleLine/store', () => {
         result.current.turn = { type: 'playCard', player: 'opponent' };
         expect(() => selectAndPlayCard(0, 0)).toThrowError();
       });
+
+      // TODO: このテストはまだ実装していない
+      it('タクティカルカードは相手の出している枚数+1枚までしか出せない', () => {});
     });
 
     describe('手札を補充する', () => {
