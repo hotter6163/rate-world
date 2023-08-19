@@ -67,3 +67,25 @@ export type Turn =
       player: Player;
       tacticalType: (typeof CONSPIRACY_CARD_TYPES)[number];
     };
+
+export enum FormationType {
+  WEDGE = 'WEDGE',
+  PHALANX = 'PHALANX',
+  BATTALION = 'BATTALION',
+  SKIRMISHER = 'SKIRMISHER',
+  HOST = 'HOST',
+  NONE = 'NONE',
+}
+
+export const formationTypeStrength = {
+  [FormationType.WEDGE]: 5,
+  [FormationType.PHALANX]: 4,
+  [FormationType.BATTALION]: 3,
+  [FormationType.SKIRMISHER]: 2,
+  [FormationType.HOST]: 1,
+};
+
+export type Formation = {
+  type: FormationType;
+  total: number;
+};
