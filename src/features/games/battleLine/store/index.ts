@@ -1,4 +1,7 @@
-import { Battlefields, Card, TacticalCard, UnitCard } from '../types';
+import { Battlefield, Card, Player, TacticalCard, Turn, UnitCard } from '../types';
+import { drawCard } from './drawCard';
+import { playCard } from './playCard';
+import { processScout } from './processScout';
 import { selectHand } from './selectHand';
 import { setupBattleLine } from './setup';
 import { create } from 'zustand';
@@ -8,14 +11,16 @@ export type BattleLineStore = {
   tacticalStack: TacticalCard[];
   myHands: Card[];
   opponentHands: Card[];
-  battlefields: Battlefields[];
-  trash: {
-    mine: Card[];
-    opponent: Card[];
-  };
+  battlefields: Battlefield[];
+  myTrash: Card[];
+  opponentTrash: Card[];
   selectedIndex: number | null;
-  setup: (test?: boolean) => void;
+  turn: Turn;
+  setup: (player: Player, test?: boolean) => void;
   selectHand: (index: number) => void;
+  playCard: (index?: number) => void;
+  drawCard: (cardType: Card['type']) => void;
+  processScout: (selectedCards: Card[], removedCards: Card[]) => void;
 };
 
 export const useBattleLineStore = create<BattleLineStore>((set) => ({
@@ -24,11 +29,13 @@ export const useBattleLineStore = create<BattleLineStore>((set) => ({
   myHands: [],
   opponentHands: [],
   battlefields: [],
-  trash: {
-    mine: [],
-    opponent: [],
-  },
+  myTrash: [],
+  opponentTrash: [],
   selectedIndex: null,
+  turn: { type: 'init' },
   setup: setupBattleLine(set),
   selectHand: selectHand(set),
+  playCard: playCard(set),
+  drawCard: drawCard(set),
+  processScout: processScout(set),
 }));

@@ -1,11 +1,10 @@
-import { TacticalCard, TacticalType, UNIT_VALUES, UnitCard, UnitColor } from './types';
+import { TacticalType, UNIT_VALUES, UnitColor } from './types';
+import { getCard } from './utils';
 
-export const unitStack: UnitCard[] = Object.values(UnitColor).flatMap((color) =>
-  UNIT_VALUES.map((value) => ({ type: 'UNIT', id: `${color}-${value}`, color, value })),
+export const unitStack = Object.values(UnitColor).flatMap((color) =>
+  UNIT_VALUES.map((value) => getCard({ type: 'UNIT', color, value })),
 );
 
-export const tacticalStack: TacticalCard[] = Object.values(TacticalType).map((tacticalType) => ({
-  type: 'TACTICAL',
-  id: tacticalType,
-  tacticalType,
-}));
+export const tacticalStack = Object.values(TacticalType).map((tacticalType) =>
+  getCard({ type: 'TACTICAL', tacticalType }),
+);

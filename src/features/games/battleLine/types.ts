@@ -39,10 +39,53 @@ export type TacticalCard = {
 
 export type Card = UnitCard | TacticalCard;
 
-export type Battlefields = {
+export type Battlefield = {
   myFormation: Card[];
   opponentFormation: Card[];
-  field: TacticalCard | null;
+  field: TacticalCard[];
 };
 
 export type Player = 'myself' | 'opponent';
+
+export const CONSPIRACY_CARD_TYPES = [
+  TacticalType.SCOUT,
+  TacticalType.REDEPLOY,
+  TacticalType.DESERTER,
+  TacticalType.TRAITOR,
+] as const;
+
+export type Turn =
+  | {
+      type: 'init';
+    }
+  | {
+      type: 'playCard' | 'drawCard' | 'decision';
+      player: Player;
+    }
+  | {
+      type: 'processing';
+      player: Player;
+      tacticalType: (typeof CONSPIRACY_CARD_TYPES)[number];
+    };
+
+export enum FormationType {
+  WEDGE = 'WEDGE',
+  PHALANX = 'PHALANX',
+  BATTALION = 'BATTALION',
+  SKIRMISHER = 'SKIRMISHER',
+  HOST = 'HOST',
+  NONE = 'NONE',
+}
+
+export const formationTypeStrength = {
+  [FormationType.WEDGE]: 5,
+  [FormationType.PHALANX]: 4,
+  [FormationType.BATTALION]: 3,
+  [FormationType.SKIRMISHER]: 2,
+  [FormationType.HOST]: 1,
+};
+
+export type Formation = {
+  type: FormationType;
+  total: number;
+};
