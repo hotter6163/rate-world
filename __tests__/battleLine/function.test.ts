@@ -55,10 +55,7 @@ describe('getFormation', () => {
   describe('ユニットカードのみの場合', () => {
     const getTotal = (cards: UnitCard[]) => cards.reduce((acc, card) => acc + card.value, 0);
 
-    const testUnitFormation = (
-      formationType: FormationType,
-      cards: [UnitCard, UnitCard, UnitCard, UnitCard],
-    ) => {
+    const testUnitFormation = (formationType: FormationType, cards: UnitCard[]) => {
       it(formationType, () => {
         expect(getFormation(cards.slice(0, 3))).toEqual({
           type: formationType,
@@ -72,41 +69,60 @@ describe('getFormation', () => {
       });
     };
 
-    testUnitFormation(FormationType.WEDGE, [
-      getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 6 }),
-      getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 7 }),
-      getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 8 }),
-      getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 5 }),
-    ]);
+    const tests = [
+      {
+        formationType: FormationType.WEDGE,
+        cards: [
+          getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 6 }),
+          getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 7 }),
+          getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 8 }),
+          getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 5 }),
+        ],
+      },
+      {
+        formationType: FormationType.PHALANX,
+        cards: [
+          getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 5 }),
+          getCard({ type: 'UNIT', color: UnitColor.PURPLE, value: 5 }),
+          getCard({ type: 'UNIT', color: UnitColor.RED, value: 5 }),
+          getCard({ type: 'UNIT', color: UnitColor.GREEN, value: 5 }),
+        ],
+      },
+      {
+        formationType: FormationType.BATTALION,
+        cards: [
+          getCard({ type: 'UNIT', color: UnitColor.RED, value: 5 }),
+          getCard({ type: 'UNIT', color: UnitColor.RED, value: 1 }),
+          getCard({ type: 'UNIT', color: UnitColor.RED, value: 10 }),
+          getCard({ type: 'UNIT', color: UnitColor.RED, value: 8 }),
+        ],
+      },
+      {
+        formationType: FormationType.SKIRMISHER,
+        cards: [
+          getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 5 }),
+          getCard({ type: 'UNIT', color: UnitColor.PURPLE, value: 5 }),
+          getCard({ type: 'UNIT', color: UnitColor.RED, value: 5 }),
+          getCard({ type: 'UNIT', color: UnitColor.GREEN, value: 5 }),
+        ],
+      },
+      {
+        formationType: FormationType.HOST,
+        cards: [
+          getCard({ type: 'UNIT', color: UnitColor.RED, value: 10 }),
+          getCard({ type: 'UNIT', color: UnitColor.YELLOW, value: 7 }),
+          getCard({ type: 'UNIT', color: UnitColor.PURPLE, value: 2 }),
+          getCard({ type: 'UNIT', color: UnitColor.GREEN, value: 4 }),
+        ],
+      },
+    ];
 
-    testUnitFormation(FormationType.PHALANX, [
-      getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 5 }),
-      getCard({ type: 'UNIT', color: UnitColor.PURPLE, value: 5 }),
-      getCard({ type: 'UNIT', color: UnitColor.RED, value: 5 }),
-      getCard({ type: 'UNIT', color: UnitColor.GREEN, value: 5 }),
-    ]);
-
-    testUnitFormation(FormationType.BATTALION, [
-      getCard({ type: 'UNIT', color: UnitColor.RED, value: 5 }),
-      getCard({ type: 'UNIT', color: UnitColor.RED, value: 1 }),
-      getCard({ type: 'UNIT', color: UnitColor.RED, value: 10 }),
-      getCard({ type: 'UNIT', color: UnitColor.RED, value: 8 }),
-    ]);
-
-    testUnitFormation(FormationType.SKIRMISHER, [
-      getCard({ type: 'UNIT', color: UnitColor.GREEN, value: 2 }),
-      getCard({ type: 'UNIT', color: UnitColor.ORANGE, value: 3 }),
-      getCard({ type: 'UNIT', color: UnitColor.YELLOW, value: 4 }),
-      getCard({ type: 'UNIT', color: UnitColor.RED, value: 1 }),
-    ]);
-
-    testUnitFormation(FormationType.HOST, [
-      getCard({ type: 'UNIT', color: UnitColor.RED, value: 10 }),
-      getCard({ type: 'UNIT', color: UnitColor.YELLOW, value: 7 }),
-      getCard({ type: 'UNIT', color: UnitColor.PURPLE, value: 2 }),
-      getCard({ type: 'UNIT', color: UnitColor.GREEN, value: 4 }),
-    ]);
+    tests.forEach(({ formationType, cards }) => {
+      testUnitFormation(formationType, cards);
+    });
   });
+
+  describe(`${TacticalType.ALEXANDER}, ${TacticalType.DARIUS}`, () => {});
 
   it('カードが3枚か4枚でない場合はNONE', () => {
     expect(
