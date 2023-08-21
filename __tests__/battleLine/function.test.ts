@@ -100,10 +100,10 @@ describe('getFormation', () => {
       {
         formationType: FormationType.SKIRMISHER,
         cards: [
-          getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 5 }),
-          getCard({ type: 'UNIT', color: UnitColor.PURPLE, value: 5 }),
-          getCard({ type: 'UNIT', color: UnitColor.RED, value: 5 }),
-          getCard({ type: 'UNIT', color: UnitColor.GREEN, value: 5 }),
+          getCard({ type: 'UNIT', color: UnitColor.GREEN, value: 2 }),
+          getCard({ type: 'UNIT', color: UnitColor.ORANGE, value: 3 }),
+          getCard({ type: 'UNIT', color: UnitColor.YELLOW, value: 4 }),
+          getCard({ type: 'UNIT', color: UnitColor.RED, value: 1 }),
         ],
       },
       {
