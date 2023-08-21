@@ -52,8 +52,6 @@ describe('getUnusedCards', () => {
 });
 
 describe('getFormation', () => {
-  describe('ユニットカードのみの場合', () => {
-    const getTotal = (cards: UnitCard[]) => cards.reduce((acc, card) => acc + card.value, 0);
 
     const testUnitFormation = (formationType: FormationType, cards: UnitCard[]) => {
       it(formationType, () => {
