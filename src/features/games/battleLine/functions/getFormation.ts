@@ -1,7 +1,7 @@
-import { Card, Formation, UnitCard } from '../../types';
-import { handleAllUnits } from './handleAllUnits';
-import { handleHasTactical } from './handleHasTactical';
-import { handleNone } from './handleNone';
+import { Card, Formation, UnitCard } from '../types';
+import { handleAllUnits } from './helpers/getFormation/handleAllUnits';
+import { handleHasTactical } from './helpers/getFormation/handleHasTactical';
+import { handleNone } from './helpers/getFormation/handleNone';
 
 export const getFormation = (cards: Card[]): Formation => {
   if (cards.length < 3) return handleNone(cards);

@@ -1,4 +1,4 @@
-import { FormationType, UnitCard } from '../../types';
+import { FormationType, UnitCard } from '../../../types';
 
 export const handleAllUnits = (unitCards: UnitCard[]) => {
   const cards = unitCards.sort((a, b) => a.value - b.value);
