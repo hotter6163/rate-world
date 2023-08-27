@@ -1,3 +1,4 @@
+import { POTENTIAL_VALUES } from '../constants';
 import { TacticalType } from '../types';
 
 export const getPotentialValue = (tacticalType: TacticalType, expectedValues?: number[]) => {
@@ -10,17 +11,4 @@ export const getPotentialValue = (tacticalType: TacticalType, expectedValues?: n
   }
 };
 
-const getMaxValue = (availableValues: number[]) => availableValues.sort((a, b) => b - a)[0] ?? 0;
-
-const POTENTIAL_VALUES: { [key in TacticalType]: number[] } = {
-  [TacticalType.ALEXANDER]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-  [TacticalType.COMPANION_CAVALRY]: [8],
-  [TacticalType.DARIUS]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-  [TacticalType.DESERTER]: [],
-  [TacticalType.FOG]: [],
-  [TacticalType.MUD]: [],
-  [TacticalType.REDEPLOY]: [],
-  [TacticalType.SCOUT]: [],
-  [TacticalType.SHIELD_BEARERS]: [1, 2, 3],
-  [TacticalType.TRAITOR]: [],
-};
+const getMaxValue = (availableValues: number[]): number => availableValues.sort((a, b) => b - a)[0];
