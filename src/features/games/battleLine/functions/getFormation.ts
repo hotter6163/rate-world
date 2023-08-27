@@ -1,11 +1,14 @@
-import { Card, Formation, FormationType, UnitCard, UnitColor } from '../types';
+import { POTENTIAL_VALUES } from '../constants';
+import { splitCards } from '../store/utils/splitCards';
+import { Card, Formation, FormationType, UnitCard, UnitValue } from '../types';
+import { calculateExpectedValues } from './calculateExpectedValues';
 import { getCard } from './getCard';
 import { getPotentialValue } from './getPotentialValue';
 
 export const getFormation = (cards: Card[], isMud: boolean): Formation => {
   if (cards.length < (isMud ? 4 : 3)) return { type: FormationType.NONE, total: getTotal(cards) };
 
-  const unitCards = replaceTacticalCards(cards);
+  const unitCards = replaceTacticalCards(cards, isMud);
   return judge(unitCards);
 };
 
@@ -15,11 +18,25 @@ const getTotal = (cards: Card[]) =>
     else return acc + (getPotentialValue(card.tacticalType) || 0);
   }, 0);
 
-const replaceTacticalCards = (cards: Card[]) =>
-  cards.map((card) => {
-    if (card.type === 'UNIT') return card;
-    else return getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 1 });
-  });
+const replaceTacticalCards = (cards: Card[], isMud: boolean) => {
+  const { unitCards, tacticalCards } = splitCards(cards);
+  const color = unitCards[0].color;
+
+  return tacticalCards
+    .sort(
+      (a, b) => POTENTIAL_VALUES[a.tacticalType].length - POTENTIAL_VALUES[b.tacticalType].length,
+    )
+    .reduce((acc, card) => {
+      const expectedValues = calculateExpectedValues(acc, isMud);
+      const potentialValue = getPotentialValue(
+        card.tacticalType,
+        expectedValues ?? undefined,
+      ) as UnitValue;
+
+      if (!potentialValue) return [...acc];
+      return [...acc, getCard({ type: 'UNIT', color, value: potentialValue })];
+    }, unitCards);
+};
 
 const judge = (unitCards: UnitCard[]) => {
   const cards = unitCards.sort((a, b) => a.value - b.value);
