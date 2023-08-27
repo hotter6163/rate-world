@@ -1,4 +1,4 @@
-import { TacticalCard, TacticalType, UnitCard, UnitColor, UnitValue } from './types';
+import { TacticalCard, TacticalType, UnitCard, UnitColor, UnitValue } from '../types';
 
 type UnitArgument = {
   type: 'UNIT';
