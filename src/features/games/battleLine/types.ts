@@ -77,14 +77,6 @@ export enum FormationType {
   NONE = 'NONE',
 }
 
-export const formationTypeStrength = {
-  [FormationType.WEDGE]: 5,
-  [FormationType.PHALANX]: 4,
-  [FormationType.BATTALION]: 3,
-  [FormationType.SKIRMISHER]: 2,
-  [FormationType.HOST]: 1,
-};
-
 export type Formation = {
   type: FormationType;
   total: number;

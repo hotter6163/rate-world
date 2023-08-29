@@ -1,28 +1,49 @@
-import { Card, Formation, FormationType, UnitCard, UnitColor } from '../types';
-import { getCard } from '../utils';
+import { POTENTIAL_VALUES } from '../constants';
+import { splitCards } from '../store/utils/splitCards';
+import { Card, Formation, FormationType, UnitCard, UnitValue } from '../types';
+import { calculateExpectedValues } from './calculateExpectedValues';
+import { getCard } from './getCard';
+import { getPotentialValue } from './getPotentialValue';
 
-export const getFormation = (cards: Card[]): Formation => {
-  const unitCards = convertToUnitCards(cards);
-  const total = getTotal(unitCards);
-  if (unitCards.length < 3) {
-    return { type: FormationType.NONE, total };
-  }
+export const getFormation = (cards: Card[], isMud: boolean): Formation => {
+  if (cards.length < (isMud ? 4 : 3)) return { type: FormationType.NONE, total: getTotal(cards) };
 
-  const formationType = getFormationType(unitCards);
-  return { type: formationType, total };
+  const unitCards = replaceTacticalCards(cards, isMud);
+  return judge(unitCards);
 };
 
-const convertToUnitCards = (card: Card[]): UnitCard[] =>
-  card
-    .map((card) => {
-      if (card.type === 'UNIT') {
-        return card;
-      }
-      return getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 1 });
-    })
-    .sort((a, b) => a.value - b.value);
+const getTotal = (cards: Card[]) =>
+  cards.reduce((acc, card) => {
+    if (card.type === 'UNIT') return acc + card.value;
+    else return acc + (getPotentialValue(card.tacticalType) || 0);
+  }, 0);
 
-const getTotal = (cards: UnitCard[]) => cards.reduce((acc, card) => acc + card.value, 0);
+const replaceTacticalCards = (cards: Card[], isMud: boolean) => {
+  const { unitCards, tacticalCards } = splitCards(cards);
+  const color = unitCards[0].color;
+
+  return tacticalCards
+    .sort(
+      (a, b) => POTENTIAL_VALUES[a.tacticalType].length - POTENTIAL_VALUES[b.tacticalType].length,
+    )
+    .reduce((acc, card) => {
+      const expectedValues = calculateExpectedValues(acc, isMud);
+      const potentialValue = getPotentialValue(
+        card.tacticalType,
+        expectedValues ?? undefined,
+      ) as UnitValue;
+
+      if (!potentialValue) return [...acc];
+      return [...acc, getCard({ type: 'UNIT', color, value: potentialValue })];
+    }, unitCards);
+};
+
+const judge = (unitCards: UnitCard[]) => {
+  const cards = unitCards.sort((a, b) => a.value - b.value);
+  const total = getTotal(cards);
+  const formationType = getFormationType(cards);
+  return { type: formationType, total };
+};
 
 const getFormationType = (cards: UnitCard[]): FormationType => {
   const isSameColor = cards.every((card, _, all) => card.color === all[0].color);
@@ -30,7 +51,6 @@ const getFormationType = (cards: UnitCard[]): FormationType => {
   const isConsecutive = cards.every(
     (card, index, all) => index === 0 || card.value === all[index - 1].value + 1,
   );
-
   if (isSameColor && isConsecutive) return FormationType.WEDGE;
   else if (isSameValue) return FormationType.PHALANX;
   else if (isSameColor) return FormationType.BATTALION;
