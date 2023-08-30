@@ -14,12 +14,12 @@ describe('getFormation', () => {
   describe('ユニットカードのみの場合', () => {
     const testUnitFormation = (formationType: FormationType, cards: UnitCard[]) => {
       it(formationType, () => {
-        expect(getFormation(cards.slice(0, 3), false)).toEqual({
+        expect(getFormation(cards.slice(0, 3), false, false)).toEqual({
           type: formationType,
           total: getTotal(cards.slice(0, 3)),
         });
 
-        expect(getFormation(cards.slice(0, 4), true)).toEqual({
+        expect(getFormation(cards.slice(0, 4), true, false)).toEqual({
           type: formationType,
           total: getTotal(cards.slice(0, 4)),
         });
@@ -88,7 +88,7 @@ describe('getFormation', () => {
       ) => {
         it(formationType, () => {
           const first = allCards.map((card) => (card.type === 'TACTICAL' ? replaceTo[0] : card));
-          expect(getFormation(allCards.slice(0, 3), false)).toEqual({
+          expect(getFormation(allCards.slice(0, 3), false, false)).toEqual({
             type: formationType,
             total: getTotal(first.slice(0, 3)),
           });
@@ -96,7 +96,7 @@ describe('getFormation', () => {
           const second = allCards.map((card) =>
             card.type === 'TACTICAL' ? replaceTo[1] ?? replaceTo[0] : card,
           );
-          expect(getFormation(allCards.slice(0, 4), true)).toEqual({
+          expect(getFormation(allCards.slice(0, 4), true, false)).toEqual({
             type: formationType,
             total: getTotal(second.slice(0, 4)),
           });
@@ -293,6 +293,7 @@ describe('getFormation', () => {
             getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 7 }),
           ],
           false,
+          false,
         ),
       ).toEqual({
         type: FormationType.WEDGE,
@@ -308,10 +309,28 @@ describe('getFormation', () => {
             getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 4 }),
           ],
           true,
+          false,
         ),
       ).toEqual({
         type: FormationType.WEDGE,
         total: 14,
+      });
+    });
+
+    it('フィールドが霧の場合', () => {
+      expect(
+        getFormation(
+          [
+            getCard({ type: 'TACTICAL', tacticalType: TacticalType.ALEXANDER }),
+            getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 3 }),
+            getCard({ type: 'UNIT', color: UnitColor.GREEN, value: 5 }),
+          ],
+          false,
+          true,
+        ),
+      ).toEqual({
+        type: FormationType.HOST,
+        total: 18,
       });
     });
   });
@@ -323,6 +342,7 @@ describe('getFormation', () => {
           getCard({ type: 'UNIT', color: UnitColor.BLUE, value: 1 }),
           getCard({ type: 'TACTICAL', tacticalType: TacticalType.ALEXANDER }),
         ],
+        false,
         false,
       ),
     ).toEqual({
