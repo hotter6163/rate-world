@@ -1,9 +1,13 @@
 import { POTENTIAL_VALUES } from '../constants';
 import { TacticalType } from '../types';
 
-export const getPotentialValue = (tacticalType: TacticalType, expectedValues?: number[]) => {
+export const getPotentialValue = (
+  tacticalType: TacticalType,
+  expectedValues?: number[],
+  isFog?: boolean,
+) => {
   const potentialValues = POTENTIAL_VALUES[tacticalType];
-  if (expectedValues) {
+  if (expectedValues && !isFog) {
     const availableValues = expectedValues.filter((value) => potentialValues.includes(value));
     return getMaxValue(availableValues.length ? availableValues : potentialValues);
   } else {

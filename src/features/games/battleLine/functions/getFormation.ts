@@ -5,10 +5,10 @@ import { calculateExpectedValues } from './calculateExpectedValues';
 import { getCard } from './getCard';
 import { getPotentialValue } from './getPotentialValue';
 
-export const getFormation = (cards: Card[], isMud: boolean): Formation => {
+export const getFormation = (cards: Card[], isMud: boolean, isFog: boolean): Formation => {
   if (cards.length < (isMud ? 4 : 3)) return { type: FormationType.NONE, total: getTotal(cards) };
 
-  const unitCards = replaceTacticalCards(cards, isMud);
+  const unitCards = replaceTacticalCards(cards, isMud, isFog);
   return judge(unitCards);
 };
 
@@ -18,7 +18,7 @@ const getTotal = (cards: Card[]) =>
     else return acc + (getPotentialValue(card.tacticalType) || 0);
   }, 0);
 
-const replaceTacticalCards = (cards: Card[], isMud: boolean) => {
+const replaceTacticalCards = (cards: Card[], isMud: boolean, isFog: boolean) => {
   const { unitCards, tacticalCards } = splitCards(cards);
   const color = unitCards[0].color;
 
@@ -31,10 +31,11 @@ const replaceTacticalCards = (cards: Card[], isMud: boolean) => {
       const potentialValue = getPotentialValue(
         card.tacticalType,
         expectedValues ?? undefined,
+        isFog,
       ) as UnitValue;
 
-      if (!potentialValue) return [...acc];
-      return [...acc, getCard({ type: 'UNIT', color, value: potentialValue })];
+      if (potentialValue) return [...acc, getCard({ type: 'UNIT', color, value: potentialValue })];
+      else return [...acc];
     }, unitCards);
 };
 
